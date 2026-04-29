@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>متجر طَلَّة | النسخة الكاملة</title>
+    <title>متجر طَلَّة | الإدارة الشاملة</title>
     
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
@@ -12,127 +12,119 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
 
     <style>
-        :root { --p: #d4af37; --bg: #f2f2f7; --card: #ffffff; --t: #1c1c1e; --blue: #007aff; --s: #34c759; --r: #ff3b30; }
-        [data-theme="dark"] { --bg: #000000; --card: #1c1c1e; --t: #ffffff; }
-        
+        :root { --p: #d4af37; --bg: #f8f9fa; --card: #ffffff; --t: #1a1a1a; --s: #34c759; --r: #ff3b30; --blue: #007aff; }
+        [data-theme="dark"] { --bg: #0d0d0d; --card: #1c1c1e; --t: #ffffff; }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
-        body { background: var(--bg); color: var(--t); padding-bottom: 100px; transition: 0.3s; }
+        body { background: var(--bg); color: var(--t); padding-bottom: 90px; }
 
-        /* الهيدر والتوثيق */
-        header { background: var(--card); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        .brand-box { display: flex; align-items: center; gap: 12px; }
-        #site-logo { width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 2px solid var(--p); display: none; }
-        .brand-name { font-size: 22px; font-weight: 900; color: var(--p); display: flex; align-items: center; gap: 6px; }
-        .verified { color: var(--blue); font-size: 16px; }
+        header { background: var(--card); padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .logo-box { display: flex; align-items: center; gap: 10px; }
+        #site-logo { width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--p); display: none; object-fit: cover; }
+        .v-badge { color: var(--blue); font-size: 14px; }
 
-        .container { max-width: 1100px; margin: 0 auto; padding: 10px; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 10px; }
         
-        /* حل مشكلة قص الصور (نظام جوميا المعدل) */
-        .product-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-        @media (min-width: 768px) { .product-grid { grid-template-columns: repeat(4, 1fr); } }
+        /* نظام عرض جوميا المعدل */
+        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+        @media (min-width: 768px) { .grid { grid-template-columns: repeat(4, 1fr); } }
 
-        .product-card { background: var(--card); border-radius: 15px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.05); }
-        .img-box { width: 100%; height: 250px; background: #eee; overflow: hidden; display: flex; align-items: center; justify-content: center; background-size: cover; background-position: center; }
-        .img-box img, .img-box video { 
-            max-width: 100%; 
-            max-height: 100%; 
-            object-fit: contain; /* ده اللي هيخلي الصورة تظهر كاملة بدون قص */
-        }
+        .p-card { background: var(--card); border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.05); }
+        .p-img-box { width: 100%; height: 240px; background: #fff; display: flex; align-items: center; justify-content: center; }
+        .p-img-box img, .p-img-box video { max-width: 100%; max-height: 100%; object-fit: contain; }
 
-        .p-details { padding: 12px; }
-        .p-title { font-size: 14px; font-weight: 700; height: 38px; overflow: hidden; margin-bottom: 5px; }
-        .p-price { font-weight: 900; color: var(--p); font-size: 18px; }
+        .p-info { padding: 12px; }
+        .p-price { color: var(--p); font-weight: 900; font-size: 18px; margin: 5px 0; }
 
-        /* لوحة المالك والطلبات */
-        .card-admin { background: var(--card); border-radius: 18px; padding: 20px; margin-bottom: 15px; border-right: 6px solid var(--p); box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
-        .order-info-line { background: var(--bg); padding: 8px 12px; border-radius: 8px; margin: 5px 0; font-size: 13px; border: 1px solid rgba(0,0,0,0.05); }
+        /* لوحة التحكم */
+        .admin-card { background: var(--card); border-radius: 15px; padding: 15px; margin-bottom: 15px; border-right: 5px solid var(--p); }
+        .order-row { background: var(--bg); padding: 10px; border-radius: 8px; margin: 5px 0; font-size: 13px; line-height: 1.6; }
         
-        input, textarea { width: 100%; padding: 14px; margin: 10px 0; border-radius: 12px; border: 1px solid #ddd; background: var(--bg); color: var(--t); outline: none; }
-        .btn { width: 100%; padding: 16px; border: none; border-radius: 12px; font-weight: 900; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.2s; }
-        .btn-gold { background: var(--p); color: #fff; }
+        input, textarea, select { width: 100%; padding: 12px; margin: 8px 0; border-radius: 10px; border: 1px solid #ddd; background: var(--bg); color: var(--t); }
+        .btn { width: 100%; padding: 14px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .btn-p { background: var(--p); color: #fff; }
         .btn-s { background: var(--s); color: #fff; }
         .btn-r { background: var(--r); color: #fff; }
 
-        nav { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 480px; background: var(--card); border-radius: 35px; display: flex; justify-content: space-around; padding: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); z-index: 1000; border: 1px solid rgba(212,175,55,0.2); }
-        .nav-link { color: #8e8e93; font-size: 24px; cursor: pointer; transition: 0.3s; }
-        .nav-link.active { color: var(--p); transform: translateY(-5px); }
+        nav { position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%); width: 92%; max-width: 500px; background: var(--card); border-radius: 25px; display: flex; justify-content: space-around; padding: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); z-index: 1000; }
+        .nav-item { color: #8e8e93; font-size: 22px; cursor: pointer; transition: 0.3s; }
+        .nav-item.active { color: var(--p); transform: translateY(-3px); }
 
-        .page { display: none; animation: slideUp 0.3s ease; }
+        .page { display: none; }
         .page.active { display: block; }
-        @keyframes slideUp { from { opacity:0; transform: translateY(10px); } to { opacity:1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
 <header>
-    <div class="brand-box">
+    <div class="logo-box">
         <img id="site-logo" src="">
-        <div class="brand-name">
-            <span id="brand-display">طَلَّة</span>
-            <i class="fas fa-check-circle verified" title="حساب موثق"></i>
+        <div style="font-weight:900; color:var(--p); display:flex; align-items:center; gap:5px">
+            <span id="site-name">طَلَّة</span>
+            <i class="fas fa-check-circle v-badge"></i>
         </div>
     </div>
-    <div style="display:flex; gap:18px">
-        <i class="fas fa-moon" onclick="toggleTheme()" style="cursor:pointer; font-size:20px"></i>
-        <i class="fas fa-crown" onclick="adminAccess()" style="color:var(--p); cursor:pointer; font-size:22px"></i>
+    <div style="display:flex; gap:15px">
+        <i class="fas fa-moon" onclick="toggleTheme()" style="cursor:pointer"></i>
+        <i class="fas fa-crown" onclick="adminAuth()" style="color:var(--p); cursor:pointer"></i>
     </div>
 </header>
 
 <div class="container">
-    <section id="shop" class="page active">
-        <div id="product-grid" class="product-grid"></div>
+    <section id="p-shop" class="page active">
+        <div id="product-list" class="grid"></div>
     </section>
 
-    <section id="track" class="page">
-        <div class="card-admin">
-            <h3 style="margin-bottom:15px">🔍 تتبع حالة طلبك</h3>
-            <input type="tel" id="track-tel" placeholder="أدخلي رقم موبايلك">
-            <button class="btn btn-gold" onclick="trackNow()">بحث عن الطلب</button>
+    <section id="p-track" class="page">
+        <div class="admin-card">
+            <h3>🚚 تتبع أوردرك</h3>
+            <p style="font-size:12px; margin-bottom:10px">ادخلي رقم موبايلك لمعرفة حالة الشحنة فوراً</p>
+            <input type="tel" id="track-input" placeholder="رقم الموبايل">
+            <button class="btn btn-p" onclick="trackOrder()">تتبع الحالة</button>
         </div>
-        <div id="track-res"></div>
+        <div id="track-results"></div>
     </section>
 
-    <section id="admin" class="page">
-        <div class="card-admin">
-            <h3>⚙️ هوية الموقع والتوثيق</h3>
-            <input type="text" id="new-site-name" placeholder="تغيير اسم البراند">
-            <label style="font-size:12px">لوجو الموقع (من الجهاز):</label>
-            <input type="file" id="new-logo-file" accept="image/*">
-            <button class="btn btn-s" onclick="updateSiteMeta()">حفظ التعديلات</button>
+    <section id="p-owner" class="page">
+        <div class="admin-card">
+            <h3>🛡️ إعدادات الموقع والتوثيق</h3>
+            <input type="text" id="set-name" placeholder="اسم البراند">
+            <label>تغيير اللوجو:</label>
+            <input type="file" id="set-logo" accept="image/*">
+            <button class="btn btn-s" onclick="saveSiteInfo()">حفظ التغييرات</button>
         </div>
 
-        <div class="card-admin">
-            <h3>📦 إضافة منتج جديد (كامل الصورة)</h3>
-            <input type="text" id="p-name" placeholder="اسم المنتج/الفستان">
-            <input type="number" id="p-cost" placeholder="السعر">
-            <label style="font-size:12px">الصورة أو الفيديو:</label>
-            <input type="file" id="p-media-file" accept="image/*,video/*">
-            <button class="btn btn-gold" onclick="uploadToCatalog()">نشر المنتج الآن</button>
+        <div class="admin-card">
+            <h3>📦 إضافة منتج (صور/فيديو)</h3>
+            <input type="text" id="new-p-title" placeholder="اسم المنتج">
+            <input type="number" id="new-p-price" placeholder="السعر">
+            <input type="file" id="new-p-file" accept="image/*,video/*">
+            <button class="btn btn-p" onclick="uploadProduct()">نشر المنتج</button>
         </div>
 
-        <h3 style="margin:20px 0 10px">📩 أوردرات بانتظارك</h3>
+        <h3 style="margin:15px 0">📩 طلبات العملاء (إدارة الشحن)</h3>
         <div id="admin-orders"></div>
     </section>
 </div>
 
 <nav>
-    <div class="nav-link active" onclick="tab('shop', this)"><i class="fas fa-home-alt"></i></div>
-    <div class="nav-link" onclick="tab('track', this)"><i class="fas fa-truck-fast"></i></div>
-    <div id="admin-nav" class="nav-link" style="display:none" onclick="tab('admin', this)"><i class="fas fa-user-gear"></i></div>
+    <div class="nav-item active" onclick="tab('p-shop', this)"><i class="fas fa-store"></i></div>
+    <div class="nav-item" onclick="tab('p-track', this)"><i class="fas fa-box-open"></i></div>
+    <div id="admin-tab" class="nav-item" style="display:none" onclick="tab('p-owner', this)"><i class="fas fa-user-shield"></i></div>
 </nav>
 
 <script>
-    // ربط Firebase
-    const fb = firebase.initializeApp({ databaseURL: "https://talah-c12c5-default-rtdb.asia-southeast1.firebasedatabase.app/" });
-    const rtdb = fb.database();
+    // ربط Firebase الخاص بك
+    const firebaseConfig = { databaseURL: "https://talah-c12c5-default-rtdb.asia-southeast1.firebasedatabase.app/" };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
 
-    let isOwner = localStorage.getItem('tallah_owner_mode') === 'true';
+    let isAdmin = localStorage.getItem('tallah_admin') === 'true';
 
     window.onload = () => {
         syncSite();
-        syncCatalog();
-        if(isOwner) {
-            document.getElementById('admin-nav').style.display='block';
+        syncProducts();
+        if(isAdmin) {
+            document.getElementById('admin-tab').style.display='block';
             syncAdminOrders();
         }
     };
@@ -140,123 +132,144 @@
     function tab(id, el) {
         document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
         document.getElementById(id).classList.add('active');
-        document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'));
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
         el.classList.add('active');
-        window.scrollTo(0,0);
     }
 
-    const conv = f => new Promise(res => { const r = new FileReader(); r.readAsDataURL(f); r.onload = () => res(r.result); });
+    const fileToData = f => new Promise(res => { const r = new FileReader(); r.readAsDataURL(f); r.onload = () => res(r.result); });
 
-    // --- مهام المالك ---
-    async function updateSiteMeta() {
-        const name = document.getElementById('new-site-name').value;
-        const file = document.getElementById('new-logo-file').files[0];
-        const up = {};
-        if(name) up['/meta/name'] = name;
-        if(file) up['/meta/logo'] = await conv(file);
-        rtdb.ref().update(up).then(() => Swal.fire('تم تحديث هوية طَلَّة'));
-    }
+    // --- وظائف المالك ---
+    async function uploadProduct() {
+        const title = document.getElementById('new-p-title').value;
+        const price = document.getElementById('new-p-price').value;
+        const file = document.getElementById('new-p-file').files[0];
+        if(!title || !file) return Swal.fire('بيانات ناقصة');
 
-    async function uploadToCatalog() {
-        const name = document.getElementById('p-name').value;
-        const price = document.getElementById('p-cost').value;
-        const file = document.getElementById('p-media-file').files[0];
-        if(!name || !file) return;
-
-        const data = await conv(file);
+        const data = await fileToData(file);
         const type = file.type.startsWith('video') ? 'video' : 'image';
-        rtdb.ref('products').push({ name, price, media: data, type }).then(() => location.reload());
+        db.ref('products').push({ title, price, media: data, type }).then(() => location.reload());
     }
 
     function syncAdminOrders() {
-        rtdb.ref('orders').on('value', snap => {
-            const box = document.getElementById('admin-orders');
-            box.innerHTML = "";
-            snap.forEach(c => {
-                const o = c.val();
-                box.innerHTML += `
-                <div class="card-admin">
-                    <b style="font-size:16px">📦 ${o.product}</b><br>
-                    <div class="order-info-line">👤 <b>الاسم:</b> ${o.name}</div>
-                    <div class="order-info-line">📞 <b>رقم التليفون:</b> ${o.phone}</div>
-                    <div class="order-info-line">📍 <b>العنوان:</b> ${o.address}</div>
-                    <div class="order-info-line">📏 <b>المقاس:</b> ${o.size || 'غير محدد'}</div>
-                    <div style="display:flex; gap:10px; margin-top:15px">
-                        <button class="btn btn-s" style="padding:10px" onclick="st('${c.key}','مقبول ✅')">قبول</button>
-                        <button class="btn btn-r" style="padding:10px" onclick="st('${c.key}','مرفوض ❌')">رفض</button>
-                        <button class="btn btn-r" style="background:#888; padding:10px" onclick="del('orders/${c.key}')">حذف</button>
+        db.ref('orders').on('value', snap => {
+            const list = document.getElementById('admin-orders');
+            list.innerHTML = "";
+            snap.forEach(child => {
+                const o = child.val();
+                list.innerHTML += `
+                <div class="admin-card">
+                    <b>📦 ${o.product}</b> <br>
+                    <div class="order-row">👤 الاسم: ${o.name} | 📞: ${o.phone}</div>
+                    <div class="order-row">⚖️ الوزن: ${o.weight} كجم | 🎨 اللون: ${o.color}</div>
+                    <div class="order-row">📍 العنوان: ${o.address}</div>
+                    <div class="order-row">📝 الوصف: ${o.desc || 'لا يوجد'}</div>
+                    <div style="display:flex; gap:5px; margin-top:10px">
+                        <select onchange="updateStatus('${child.key}', this.value)" style="margin:0; width:50%">
+                            <option value="">تحديث الحالة 🚚</option>
+                            <option value="قيد المراجعة ⏳">قيد المراجعة</option>
+                            <option value="تم قبول الطلب ✅">قبول الطلب</option>
+                            <option value="خرج للأوردر للشحن 🚚">خرج للشحن</option>
+                            <option value="تم التوصيل بنجاح 🎉">تم التوصيل</option>
+                        </select>
+                        <button class="btn btn-r" style="width:50%" onclick="delItem('orders/${child.key}')">حذف الطلب</button>
                     </div>
                 </div>`;
             });
         });
     }
 
-    function st(id, s) { rtdb.ref(`orders/${id}`).update({ status: s }); }
+    function updateStatus(id, s) { if(s) db.ref(`orders/${id}`).update({ status: s }).then(() => Swal.fire('تم تحديث حالة الشحنة')); }
 
-    // --- مهام العميل ---
-    function syncCatalog() {
-        rtdb.ref('products').on('value', snap => {
-            const grid = document.getElementById('product-grid');
-            grid.innerHTML = "";
-            snap.forEach(c => {
-                const p = c.val();
-                let m = p.type === 'video' ? `<video src="${p.media}" autoplay muted loop playsinline></video>` : `<img src="${p.media}">`;
-                grid.innerHTML += `
-                <div class="product-card">
-                    <div class="img-box">${m}</div>
-                    <div class="p-details">
-                        <div class="p-title">${p.name}</div>
+    // --- وظائف العميل ---
+    function syncProducts() {
+        db.ref('products').on('value', snap => {
+            const list = document.getElementById('product-list');
+            list.innerHTML = "";
+            snap.forEach(child => {
+                const p = child.val();
+                let media = p.type === 'video' ? `<video src="${p.media}" autoplay muted loop playsinline></video>` : `<img src="${p.media}">`;
+                list.innerHTML += `
+                <div class="p-card">
+                    <div class="p-img-box">${media}</div>
+                    <div class="p-info">
+                        <div style="font-weight:700; height:35px; overflow:hidden">${p.title}</div>
                         <div class="p-price">${p.price} ج.م</div>
-                        <button class="btn btn-gold" style="padding:10px; font-size:12px" onclick="buyForm('${p.name}')">اطلب الآن</button>
-                        ${isOwner ? `<button onclick="del('products/${c.key}')" style="color:red; background:none; border:none; font-size:10px; margin-top:10px">حذف المنتج</button>` : ''}
+                        <button class="btn btn-p" onclick="openOrderModal('${p.title}')">اطلبي الآن</button>
+                        ${isAdmin ? `<button onclick="delItem('products/${child.key}')" style="color:red; background:none; border:none; font-size:10px; margin-top:10px">حذف المنتج</button>` : ''}
                     </div>
                 </div>`;
             });
         });
     }
 
-    async function buyForm(p) {
-        const { value: v } = await Swal.fire({
-            title: 'طلب ' + p,
-            html: `<input id="sw-n" class="swal2-input" placeholder="الاسم"><input id="sw-p" class="swal2-input" placeholder="رقم الموبايل"><input id="sw-s" class="swal2-input" placeholder="المقاس"><textarea id="sw-a" class="swal2-textarea" placeholder="العنوان بالتفصيل"></textarea>`,
-            preConfirm: () => [document.getElementById('sw-n').value, document.getElementById('sw-p').value, document.getElementById('sw-s').value, document.getElementById('sw-a').value]
+    async function openOrderModal(pName) {
+        const { value: res } = await Swal.fire({
+            title: 'طلب ' + pName,
+            html: `
+                <input id="n" class="swal2-input" placeholder="الاسم الكامل">
+                <input id="p" class="swal2-input" placeholder="رقم الموبايل">
+                <input id="w" class="swal2-input" placeholder="الوزن (بالكيلو)">
+                <input id="c" class="swal2-input" placeholder="اللون المطلوب">
+                <textarea id="a" class="swal2-textarea" placeholder="العنوان بالتفصيل"></textarea>
+                <textarea id="d" class="swal2-textarea" placeholder="وصف إضافي للطلب (اختياري)"></textarea>
+            `,
+            preConfirm: () => [
+                document.getElementById('n').value,
+                document.getElementById('p').value,
+                document.getElementById('w').value,
+                document.getElementById('c').value,
+                document.getElementById('a').value,
+                document.getElementById('d').value
+            ]
         });
-        if(v && v[1]) {
-            rtdb.ref('orders').push({ product: p, name: v[0], phone: v[1], size: v[2], address: v[3], status: 'قيد المراجعة ⏳' })
-            .then(() => Swal.fire('تم استلام طلبك يا ملكة ✨'));
+        if(res && res[1]) {
+            db.ref('orders').push({ 
+                product: pName, name: res[0], phone: res[1], weight: res[2], color: res[3], address: res[4], desc: res[5], 
+                status: 'قيد المراجعة ⏳', time: Date.now() 
+            }).then(() => Swal.fire('شكراً لكِ!', 'تم استلام طلبك، تابعي حالة الشحنة برقم موبايلك', 'success'));
         }
     }
 
-    function trackNow() {
-        const t = document.getElementById('track-tel').value;
-        rtdb.ref('orders').orderByChild('phone').equalTo(t).on('value', snap => {
-            const res = document.getElementById('track-res');
-            res.innerHTML = "";
+    function trackOrder() {
+        const tel = document.getElementById('track-input').value;
+        db.ref('orders').orderByChild('phone').equalTo(tel).on('value', snap => {
+            const div = document.getElementById('track-results');
+            div.innerHTML = "";
+            if(!snap.exists()) return div.innerHTML = "<p style='text-align:center'>لا توجد طلبات لهذا الرقم</p>";
             snap.forEach(c => {
                 const o = c.val();
-                res.innerHTML += `<div class="card-admin">📦 ${o.product}<br><b>الحالة: ${o.status}</b></div>`;
+                div.innerHTML += `<div class="admin-card">📦 أوردر: ${o.product}<br><b>الحالة الآن: ${o.status}</b></div>`;
             });
         });
     }
 
+    async function saveSiteInfo() {
+        const name = document.getElementById('set-name').value;
+        const file = document.getElementById('set-logo').files[0];
+        const up = {};
+        if(name) up['/site/name'] = name;
+        if(file) up['/site/logo'] = await fileToData(file);
+        db.ref().update(up).then(() => Swal.fire('تم التحديث'));
+    }
+
     function syncSite() {
-        rtdb.ref('meta').on('value', snap => {
-            const d = snap.val();
-            if(d) {
-                if(d.name) { document.getElementById('brand-display').innerText = d.name; document.title = d.name; }
-                if(d.logo) { const l = document.getElementById('site-logo'); l.src = d.logo; l.style.display='block'; }
+        db.ref('site').on('value', snap => {
+            const s = snap.val();
+            if(s) {
+                if(s.name) { document.getElementById('site-name').innerText = s.name; document.title = s.name; }
+                if(s.logo) { const l = document.getElementById('site-logo'); l.src = s.logo; l.style.display='block'; }
             }
         });
     }
 
-    async function adminAccess() {
-        if(isOwner) return tab('admin', document.getElementById('admin-nav'));
+    async function adminAuth() {
+        if(isAdmin) return tab('p-owner', document.getElementById('admin-tab'));
         const { value: p } = await Swal.fire({ title: 'رمز المالك', input: 'password' });
-        if(p === "2009257mama") { localStorage.setItem('tallah_owner_mode', 'true'); location.reload(); }
+        if(p === "2009257mama") { localStorage.setItem('tallah_admin', 'true'); location.reload(); }
     }
 
     function toggleTheme() { document.body.setAttribute('data-theme', document.body.getAttribute('data-theme')==='dark'?'':'dark'); }
-    function del(path) { if(confirm('متأكد؟')) rtdb.ref(path).remove(); }
+    function delItem(path) { if(confirm('متأكد؟')) db.ref(path).remove(); }
 </script>
 </body>
 </html>
