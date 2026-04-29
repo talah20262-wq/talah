@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>متجر طَلَّة الملكي</title>
+    
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        :root { --primary: #d4af37; --bg: #f4f4f9; --card: #ffffff; --text: #1a1a1a; --danger: #ff3b30; --success: #34c759; }
+        [data-theme="dark"] { --bg: #0d0d0d; --card: #1a1a1a; --text: #f4f4f9; }
+        
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background: var(--bg); color: var(--text); padding-bottom: 100px; transition: 0.3s; }
+
+        header { background: var(--card); padding: 15px 25px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.05); border-bottom: 2px solid var(--primary); }
+        .logo-area { display: flex; align-items: center; gap: 10px; }
+        .logo-area h1 { font-size: 24px; font-weight: 900; color: var(--primary); letter-spacing: 1px; }
+
+        .container { max-width: 600px; margin: 0 auto; padding: 15px; }
+        .page { display: none; animation: slideUp 0.4s ease-out; }
+        .page.active { display: block; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* كروت المنتجات */
+        .product-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
+        .product-card { background: var(--card); border-radius: 25px; overflow: hidden; box-shadow: 0 8px 25px rgba(0,0,0,0.05); position: relative; border: 1px solid rgba(212, 175, 55, 0.1); }
+        .product-img { width: 100%; height: 350px; object-fit: cover; }
+        .product-details { padding: 20px; }
+        .price-tag { font-size: 22px; font-weight: 900; color: var(--primary); }
+
+        /* فورم الأوردر */
+        .order-panel { background: var(--card); border-radius: 30px; padding: 25px; border: 2px solid var(--primary); }
+        input, textarea, select { width: 100%; padding: 15px; margin: 10px 0; border-radius: 15px; border: 1px solid #ddd; background: var(--bg); color: var(--text); font-size: 15px; outline: none; }
+        input:focus { border-color: var(--primary); }
+        
+        .btn { width: 100%; padding: 18px; border: none; border-radius: 18px; font-weight: 900; cursor: pointer; transition: 0.3s; font-size: 16px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .btn-gold { background: var(--primary); color: #fff; box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3); }
+        .btn-loc { background: #007aff; color: #fff; margin-bottom: 15px; }
+        .btn:active { transform: scale(0.96); }
+
+        /* شريط التنقل */
+        nav { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 450px; background: var(--card); border-radius: 40px; display: flex; justify-content: space-around; padding: 15px; box-shadow: 0 15px 35px rgba(0,0,0,0.2); z-index: 1000; border: 1px solid rgba(212, 175, 55, 0.2); }
+        .nav-item { color: #8e8e93; font-size: 24px; cursor: pointer; transition: 0.3s; }
+        .nav-item.active { color: var(--primary); transform: translateY(-8px); }
+
+        /* لوحة التحكم */
+        .admin-card { background: var(--card); border-radius: 20px; padding: 20px; margin-bottom: 15px; border-right: 6px solid var(--primary); }
+        .status-badge { font-size: 12px; padding: 4px 10px; border-radius: 8px; font-weight: bold; }
+    </style>
+</head>
+<body data-theme="light">
+
+<header>
+    <div class="logo-area">
+        <h1 id="brandNameDisplay">طَلَّة</h1>
+    </div>
+    <div style="display:flex; gap:18px">
+        <i class="fas fa-adjust" onclick="toggleTheme()" style="font-size:20px"></i>
+        <i class="fas fa-crown" onclick="accessAdmin()" style="color:var(--primary); font-size:22px"></i>
+    </div>
+</header>
+
+<div class="container">
+    <section id="page-shop" class="page active">
+        <div id="catalog-container" class="product-grid"></div>
+    </section>
+
+    <section id="page-order" class="page">
+        <div class="order-panel">
+            <h2 style="text-align:center; margin-bottom:20px">تأكيد طلبك ✨</h2>
+            <div id="order-summary" style="padding:15px; background:var(--bg); border-radius:15px; margin-bottom:20px; border:1px dashed var(--primary)"></div>
+            
+            <input type="text" id="cust-size" placeholder="📏 المقاس (اختياري)">
+            <input type="number" id="cust-weight" placeholder="⚖ الوزن الحالي (كجم)">
+            <input type="text" id="cust-color" placeholder="🎨 اللون المطلوب">
+            <input type="text" id="cust-name" placeholder="👤 اسمك بالكامل">
+            <textarea id="cust-address" rows="3" placeholder="📍 العنوان بالتفصيل (برج، شارع، علامة مميزة)"></textarea>
+            <input type="tel" id="cust-phone" placeholder="📞 رقم التليفون">
+            
+            <button class="btn btn-loc" onclick="askLocation()">
+                <i class="fas fa-location-arrow"></i> تحديد موقعك لايف (للتوصيل السريع)
+            </button>
+            <p id="loc-status" style="font-size:11px; text-align:center; color:var(--primary); margin-bottom:15px"></p>
+            
+            <button class="btn btn-gold" onclick="sendOrder()">إرسال الأوردر للمراجعة ✨</button>
+        </div>
+    </section>
+
+    <section id="page-admin" class="page">
+        <div class="admin-card">
+            <h3>⚙️ إعدادات المتجر الملكي</h3>
+            <input type="text" id="edit-brand" placeholder="تغيير اسم البراند">
+            <button class="btn btn-gold" onclick="saveBrandName()">تحديث الاسم</button>
+            <hr style="margin:20px 0; opacity:0.1">
+            <h3>📦 إضافة كتالوج جديد</h3>
+            <input type="text" id="new-p-title" placeholder="اسم المنتج/الفستان">
+            <input type="number" id="new-p-price" placeholder="السعر (ج.م)">
+            <input type="text" id="new-p-img" placeholder="رابط صورة المنتج (URL)">
+            <button class="btn btn-gold" onclick="addNewProduct()">إضافة للكتالوج</button>
+        </div>
+
+        <h2 style="margin:25px 0 15px">📩 الأوردرات الواردة</h2>
+        <div id="orders-inbox"></div>
+    </section>
+</div>
+
+<nav>
+    <div class="nav-item active" onclick="navTo('page-shop', this)"><i class="fas fa-th-large"></i></div>
+    <div class="nav-item" onclick="navTo('page-order', this)"><i class="fas fa-shopping-bag"></i></div>
+    <div id="crown-nav" class="nav-item" style="display:none" onclick="navTo('page-admin', this)"><i class="fas fa-user-shield"></i></div>
+</nav>
+
+<script>
+    // تكوين قاعدة البيانات من الصورة المرفقة (talah-c12c5)
+    const firebaseConfig = { databaseURL: "https://talah-c12c5-default-rtdb.asia-southeast1.firebasedatabase.app/" };
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+
+    let currentOrder = null;
+    let liveLocation = null;
+    let isAdmin = localStorage.getItem('tallah_admin') === 'true';
+
+    window.onload = () => {
+        loadSettings();
+        loadCatalog();
+        if(isAdmin) {
+            document.getElementById('crown-nav').style.display = 'block';
+            loadOrders();
+        }
+    };
+
+    function navTo(id, el) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+        el.classList.add('active');
+        window.scrollTo(0,0);
+    }
+
+    // --- وظائف تحديد الموقع ---
+    function askLocation() {
+        const status = document.getElementById('loc-status');
+        if (navigator.geolocation) {
+            status.innerText = "جاري الاتصال بالأقمار الصناعية...";
+            navigator.geolocation.getCurrentPosition(position => {
+                liveLocation = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude,
+                    link: `https://www.google.com/maps?q=${position.coords.latitude},${position.coords.longitude}`
+                };
+                status.innerText = "✅ تم تحديد موقعك لايف بنجاح";
+                status.style.color = "#34c759";
+            }, () => {
+                status.innerText = "❌ لم نتمكن من تحديد الموقع، يرجى تفعيل الـ GPS";
+            });
+        }
+    }
+
+    // --- وظائف العميل ---
+    function loadCatalog() {
+        database.ref('products').on('value', snap => {
+            const container = document.getElementById('catalog-container');
+            container.innerHTML = "";
+            snap.forEach(child => {
+                const p = child.val();
+                container.innerHTML += `
+                <div class="product-card">
+                    <img src="${p.img}" class="product-img">
+                    <div class="product-details">
+                        <h3>${p.title}</h3>
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px">
+                            <span class="price-tag">${p.price} ج.م</span>
+                            <button class="btn btn-gold" style="width:auto; padding:10px 25px" onclick="selectForOrder('${child.key}', '${p.title}', ${p.price})">اطلبي الآن</button>
+                        </div>
+                        ${isAdmin ? `<button onclick="deleteItem('products/${child.key}')" style="color:red; background:none; border:none; margin-top:15px; font-size:12px">🗑️ حذف من الكتالوج</button>` : ''}
+                    </div>
+                </div>`;
+            });
+        });
+    }
+
+    function selectForOrder(id, title, price) {
+        currentOrder = { id, title, price };
+        document.getElementById('order-summary').innerHTML = `🔹 المنتج المختار: <b>${title}</b><br>🔹 السعر: <b>${price} ج.م</b>`;
+        navTo('page-order', document.querySelectorAll('.nav-item')[1]);
+    }
+
+    function sendOrder() {
+        const orderData = {
+            product: currentOrder,
+            size: document.getElementById('cust-size').value,
+            weight: document.getElementById('cust-weight').value,
+            color: document.getElementById('cust-color').value,
+            name: document.getElementById('cust-name').value,
+            address: document.getElementById('cust-address').value,
+            phone: document.getElementById('cust-phone').value,
+            location: liveLocation,
+            timestamp: Date.now()
+        };
+
+        if(!orderData.name || !orderData.phone || !orderData.address) {
+            return Swal.fire('بيانات ناقصة', 'يا ملكة، الاسم والتليفون والعنوان مهمين جداً عشان نوصلك!', 'warning');
+        }
+
+        database.ref('orders').push(orderData).then(() => {
+            Swal.fire({
+                title: 'تم استلام أوردرك ✨',
+                text: 'طَلَّة فِي خِدْمَتِكُمْ دَائِمًا ❤ سنقوم بالتواصل معكم فوراً لتأكيد الموعد',
+                icon: 'success',
+                confirmButtonColor: '#d4af37'
+            }).then(() => location.reload());
+        });
+    }
+
+    // --- وظائف المالك ---
+    function addNewProduct() {
+        const title = document.getElementById('new-p-title').value;
+        const price = document.getElementById('new-p-price').value;
+        const img = document.getElementById('new-p-img').value;
+        if(title && price && img) {
+            database.ref('products').push({ title, price, img }).then(() => {
+                Swal.fire('تم الإضافة بنجاح');
+                document.getElementById('new-p-title').value = '';
+                document.getElementById('new-p-price').value = '';
+                document.getElementById('new-p-img').value = '';
+            });
+        }
+    }
+
+    function loadOrders() {
+        database.ref('orders').on('value', snap => {
+            const inbox = document.getElementById('orders-inbox');
+            inbox.innerHTML = "";
+            snap.forEach(child => {
+                const o = child.val();
+                inbox.innerHTML += `
+                <div class="admin-card">
+                    <div style="display:flex; justify-content:space-between">
+                        <b>📦 ${o.product ? o.product.title : 'منتج'}</b>
+                        <small style="opacity:0.5">${new Date(o.timestamp).toLocaleString('ar-EG')}</small>
+                    </div>
+                    <div style="margin:10px 0; font-size:14px">
+                        📏 المقاس: ${o.size || 'لم يحدد'} | ⚖ الوزن: ${o.weight} | 🎨 اللون: ${o.color}<br>
+                        👤 العميل: <b>${o.name}</b><br>
+                        📞 التليفون: <a href="tel:${o.phone}">${o.phone}</a><br>
+                        📍 العنوان: ${o.address}
+                    </div>
+                    ${o.location ? `<a href="${o.location.link}" target="_blank" class="btn btn-loc" style="padding:8px; font-size:12px">📍 فتح الموقع على الخريطة</a>` : '<p style="color:red; font-size:10px">لم يتم تحديد الموقع لايف</p>'}
+                    <button onclick="deleteItem('orders/${child.key}')" style="background:none; border:none; color:var(--danger); font-size:12px; margin-top:10px">✅ تم التنفيذ (حذف الأوردر)</button>
+                </div>`;
+            });
+        });
+    }
+
+    function saveBrandName() {
+        const name = document.getElementById('edit-brand').value;
+        if(name) database.ref('settings/brandName').set(name).then(() => Swal.fire('تم تغيير اسم البراند'));
+    }
+
+    function loadSettings() {
+        database.ref('settings/brandName').on('value', snap => {
+            const name = snap.val() || "طَلَّة";
+            document.getElementById('brandNameDisplay').innerText = name;
+            document.title = "متجر " + name;
+        });
+    }
+
+    async function accessAdmin() {
+        if(isAdmin) return navTo('page-admin', document.getElementById('crown-nav'));
+        const { value: pass } = await Swal.fire({ title: 'رمز الدخول الملكي', input: 'password' });
+        if(pass === "2009257mama") {
+            localStorage.setItem('tallah_admin', 'true');
+            location.reload();
+        }
+    }
+
+    function deleteItem(path) {
+        Swal.fire({ title: 'هل أنت متأكد؟', icon: 'warning', showCancelButton: true }).then(r => {
+            if(r.isConfirmed) database.ref(path).remove();
+        });
+    }
+
+    function toggleTheme() {
+        const theme = document.body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        document.body.setAttribute('data-theme', theme);
+    }
+</script>
+</body>
+</html>
