@@ -895,10 +895,8 @@ snap.forEach(c=>{
 const o = c.val();
 
 list.innerHTML += `
-
-<div class="admin-card">
-
-<b>${o.product}</b>
+ 
+ <b>${o.product}</b>
 
 <p>👤 ${o.name}</p>
 
@@ -906,7 +904,11 @@ list.innerHTML += `
 
 <p>📍 ${o.address}</p>
 
+<p>🎨 اللون: ${o.color}</p>
+
 <p>🚚 ${o.status}</p>
+
+<select onchange="updateStatus('${c.key}',this.value)">
 
 <select onchange="updateStatus('${c.key}',this.value)">
 
