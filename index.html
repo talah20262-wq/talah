@@ -123,14 +123,13 @@
 </nav>
 
 <script>
-    // تكوين Firebase
     const firebaseConfig = { databaseURL: "https://talah-c12c5-default-rtdb.asia-southeast1.firebasedatabase.app/" };
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-    // إعدادات Cloudinary (ضع بياناتك هنا)
-    const CLOUD_NAME = "YOUR_CLOUD_NAME"; 
-    const UPLOAD_PRESET = "YOUR_UNSIGNED_PRESET";
+    // تم تحديث البيانات هنا بناءً على حسابك
+    const CLOUD_NAME = "dfbqpjtvm"; 
+    const UPLOAD_PRESET = "talla_preset";
 
     let isAdmin = localStorage.getItem('tallah_admin') === 'true';
 
@@ -152,7 +151,6 @@
 
     const fileToData = f => new Promise(res => { const r = new FileReader(); r.readAsDataURL(f); r.onload = () => res(r.result); });
 
-    // الدالة المعدلة لرفع الصور لـ Cloudinary
     async function uploadProduct() {
         const title = document.getElementById('new-p-title').value;
         const price = document.getElementById('new-p-price').value;
@@ -186,7 +184,7 @@
                 throw new Error('Upload failed');
             }
         } catch (err) {
-            Swal.fire('خطأ في الرفع', 'تأكد من إعدادات Cloudinary', 'error');
+            Swal.fire('خطأ في الرفع', 'تأكد من إعداد talla_preset ليكون Unsigned في Cloudinary', 'error');
         }
     }
 
@@ -291,7 +289,6 @@
         const up = {};
         if(name) up['/site/name'] = name;
         if(file) {
-            // رفع اللوجو أيضاً إلى Cloudinary
             const formData = new FormData();
             formData.append('file', file);
             formData.append('upload_preset', UPLOAD_PRESET);
