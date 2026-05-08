@@ -2,44 +2,71 @@
 <html lang="ar" dir="rtl">
 
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<title>متجر طَلَّة</title>
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<title>متجر طَلَّة | الشياكة تبدأ من هنا</title>
+
+<meta property="og:title" content="متجر طَلَّة">
+<meta property="og:description" content="أقوى كولكشن ملابس حريمي">
+<meta property="og:image" id="og-image-meta" content="">
+<meta property="og:type" content="website">
 
 <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap"
+rel="stylesheet">
 
 <style>
 
 :root{
 --p:#d4af37;
 --bg:#f6f6f6;
---card:#fff;
---t:#111;
+--card:#ffffff;
+--t:#111111;
+--s:#34c759;
+--r:#ff3b30;
+--blue:#007aff;
+}
+
+[data-theme="dark"]{
+--bg:#0d0d0d;
+--card:#1c1c1e;
+--t:#ffffff;
+}
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Cairo',sans-serif;
 }
 
 body{
-margin:0;
-font-family:'Cairo';
 background:var(--bg);
 color:var(--t);
-padding-bottom:120px;
+padding-bottom:140px;
 }
 
 header{
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:15px;
-background:var(--card);
 position:sticky;
 top:0;
 z-index:1000;
+background:var(--card);
+padding:15px 20px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+box-shadow:0 3px 15px rgba(0,0,0,.08);
 }
 
 .logo-box{
@@ -53,66 +80,202 @@ width:45px;
 height:45px;
 border-radius:50%;
 object-fit:cover;
+display:none;
 border:2px solid var(--p);
 }
 
-.container{padding:10px;max-width:1200px;margin:auto}
+.container{
+max-width:1300px;
+margin:auto;
+padding:12px;
+}
 
 .grid{
 display:grid;
 grid-template-columns:repeat(2,1fr);
-gap:10px;
+gap:14px;
 }
 
 @media(min-width:768px){
-.grid{grid-template-columns:repeat(4,1fr)}
+.grid{
+grid-template-columns:repeat(4,1fr);
+}
 }
 
-.card{
+.p-card{
 background:var(--card);
-padding:10px;
-border-radius:15px;
+border-radius:18px;
+overflow:hidden;
+box-shadow:0 5px 20px rgba(0,0,0,.07);
+transition:.3s;
 }
 
-input,textarea,select{
+.p-card:hover{
+transform:translateY(-4px);
+}
+
+.p-img-box{
 width:100%;
-padding:10px;
-margin-top:10px;
-border-radius:10px;
-border:1px solid #ddd;
+aspect-ratio:4/5;
+background:#fff;
+display:flex;
+align-items:center;
+justify-content:center;
+overflow:hidden;
+position:relative;
 }
 
-button{
-padding:12px;
+.p-img-box img,
+.p-img-box video{
+width:100%;
+height:100%;
+object-fit:contain;
+background:#fff;
+cursor:pointer;
+}
+
+.discount{
+position:absolute;
+top:10px;
+left:10px;
+background:#ff3b30;
+color:#fff;
+padding:5px 12px;
+border-radius:30px;
+font-size:12px;
+font-weight:bold;
+z-index:10;
+}
+
+.p-info{
+padding:14px;
+}
+
+.p-title{
+font-size:18px;
+font-weight:800;
+min-height:45px;
+}
+
+.old-price{
+text-decoration:line-through;
+font-size:14px;
+color:#999;
+margin-top:4px;
+}
+
+.new-price{
+font-size:25px;
+font-weight:900;
+color:var(--p);
+margin-top:4px;
+}
+
+.btn{
+width:100%;
+padding:14px;
 border:none;
-border-radius:10px;
+border-radius:12px;
 cursor:pointer;
 font-weight:bold;
+margin-top:10px;
+font-size:16px;
 }
 
-.btn-p{background:var(--p);color:#fff}
-
-.nav{
-position:fixed;
-bottom:10px;
-left:50%;
-transform:translateX(-50%);
-background:#fff;
-padding:10px;
-border-radius:25px;
-display:flex;
-gap:25px;
+.btn-p{
+background:var(--p);
+color:#fff;
 }
 
-.page{display:none}
-.page.active{display:block}
+.btn-r{
+background:var(--r);
+color:#fff;
+}
 
 .admin-card{
-background:#fff;
+background:var(--card);
 padding:15px;
-margin:10px 0;
-border-radius:15px;
+border-radius:16px;
+margin-bottom:15px;
+box-shadow:0 5px 15px rgba(0,0,0,.05);
 }
+
+.stat-card{
+text-align:center;
+}
+
+input,
+textarea,
+select{
+width:100%;
+padding:13px;
+margin-top:10px;
+border-radius:12px;
+border:1px solid #ddd;
+background:var(--bg);
+color:var(--t);
+}
+
+nav{
+position:fixed;
+bottom:15px;
+left:50%;
+transform:translateX(-50%);
+width:92%;
+max-width:500px;
+background:var(--card);
+padding:12px;
+display:flex;
+justify-content:space-around;
+border-radius:30px;
+box-shadow:0 10px 25px rgba(0,0,0,.2);
+z-index:1000;
+}
+
+.nav-item{
+font-size:22px;
+cursor:pointer;
+color:#888;
+}
+
+.nav-item.active{
+color:var(--p);
+}
+
+.page{
+display:none;
+}
+
+.page.active{
+display:block;
+}
+
+.social-bar{
+position:fixed;
+bottom:85px;
+left:50%;
+transform:translateX(-50%);
+display:flex;
+gap:18px;
+z-index:999;
+}
+
+.social-item{
+width:50px;
+height:50px;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:22px;
+color:#fff;
+text-decoration:none;
+box-shadow:0 5px 15px rgba(0,0,0,.2);
+}
+
+.wa{background:#25D366;}
+.fb{background:#1877F2;}
+.tk{background:#000;}
 
 </style>
 
@@ -121,240 +284,882 @@ border-radius:15px;
 <body>
 
 <header>
+
 <div class="logo-box">
-<img id="site-logo" src="">
-<h2 id="site-name">طَلَّة</h2>
+
+<img id="site-logo">
+
+<div style="font-size:24px;font-weight:900;color:var(--p)">
+
+<span id="site-name">طَلَّة</span>
+
+<i class="fas fa-check-circle"
+style="color:#007aff;font-size:14px"></i>
+
 </div>
 
-<i class="fas fa-crown" onclick="adminAuth()"></i>
+</div>
+
+<div style="display:flex;gap:15px">
+
+<i class="fas fa-moon"
+onclick="toggleTheme()"
+style="cursor:pointer"></i>
+
+<i class="fas fa-crown"
+onclick="adminAuth()"
+style="cursor:pointer;color:var(--p)"></i>
+
+</div>
+
 </header>
 
 <div class="container">
 
-<!-- SHOP -->
-<section id="shop" class="page active">
-<div id="products" class="grid"></div>
+<section id="p-shop" class="page active">
+
+<div id="product-list" class="grid"></div>
+
 </section>
 
-<!-- TRACK -->
-<section id="track" class="page">
-<div class="card">
-<h3>تتبع الطلب</h3>
-<input id="track-phone" placeholder="رقم الهاتف">
-<button class="btn-p" onclick="trackOrder()">بحث</button>
-</div>
-
-<div id="track-result"></div>
-</section>
-
-<!-- ADMIN -->
-<section id="admin" class="page">
+<section id="p-track" class="page">
 
 <div class="admin-card">
-<h3>إعدادات الموقع</h3>
 
-<input id="set-name" placeholder="اسم الموقع">
-<input type="file" id="set-logo">
+<h2>تتبع الطلب</h2>
 
-<button class="btn-p" onclick="saveSettings()">حفظ</button>
+<input type="tel"
+id="track-input"
+placeholder="رقم الموبايل">
+
+<button class="btn btn-p"
+onclick="trackOrder()">
+
+تتبع الآن
+
+</button>
+
+</div>
+
+<div id="track-results"></div>
+
+</section>
+
+<section id="p-owner" class="page">
+
+<div class="grid">
+
+<div class="admin-card stat-card">
+
+<i class="fas fa-eye"></i>
+
+<h2 id="visit-count">0</h2>
+
+<p>الزيارات</p>
+
+</div>
+
+<div class="admin-card stat-card">
+
+<i class="fas fa-mouse-pointer"></i>
+
+<h2 id="click-count">0</h2>
+
+<p>الضغطات</p>
+
+</div>
+
+<div class="admin-card stat-card">
+
+<i class="fas fa-shopping-basket"></i>
+
+<h2 id="order-count">0</h2>
+
+<p>الطلبات</p>
+
+</div>
+
 </div>
 
 <div class="admin-card">
-<h3>إضافة منتج</h3>
 
-<input id="p-title" placeholder="اسم المنتج">
-<input id="p-price" placeholder="السعر">
-<input id="p-old" placeholder="السعر القديم">
-<input id="p-discount" placeholder="خصم">
-<input id="p-link" placeholder="لينك">
+<h2>إعدادات البراند</h2>
 
-<input type="file" id="p-file">
+<input type="text"
+id="set-name"
+placeholder="اسم البراند">
 
-<button class="btn-p" onclick="addProduct()">نشر</button>
+<input type="file"
+id="set-logo"
+accept="image/*">
+
+<button class="btn btn-p"
+onclick="saveSiteInfo()">
+
+حفظ التعديلات
+
+</button>
+
 </div>
 
-<h3>الطلبات</h3>
-<div id="orders"></div>
+<div class="admin-card">
+
+<h2>إضافة منتج جديد</h2>
+
+<input type="text"
+id="new-p-title"
+placeholder="اسم المنتج">
+
+<input type="number"
+id="new-p-oldprice"
+placeholder="السعر قبل الخصم">
+
+<input type="number"
+id="new-p-price"
+placeholder="السعر الحالي">
+
+<input type="number"
+id="new-p-discount"
+placeholder="نسبة الخصم %">
+
+<input type="url"
+id="new-p-link"
+placeholder="لينك الفيديو أو المنشور">
+
+<input type="file"
+id="new-p-file"
+accept="image/*,video/*">
+
+<button class="btn btn-p"
+onclick="uploadProduct()">
+
+نشر المنتج
+
+</button>
+
+</div>
+
+<h2 style="margin:15px 0">
+
+إدارة الطلبات
+
+</h2>
+
+<div id="admin-orders"></div>
 
 </section>
 
 </div>
 
-<div class="nav">
-<span onclick="tab('shop')">🛍</span>
-<span onclick="tab('track')">📦</span>
-<span onclick="tab('admin')" id="adminBtn" style="display:none">⚙</span>
+<div class="social-bar">
+
+<a href="https://wa.me/201026482060"
+class="social-item wa"
+target="_blank">
+
+<i class="fab fa-whatsapp"></i>
+
+</a>
+
+<a href="https://facebook.com"
+class="social-item fb"
+target="_blank">
+
+<i class="fab fa-facebook-f"></i>
+
+</a>
+
+<a href="https://tiktok.com"
+class="social-item tk"
+target="_blank">
+
+<i class="fab fa-tiktok"></i>
+
+</a>
+
 </div>
+
+<nav>
+
+<div class="nav-item active"
+onclick="tab('p-shop',this)">
+
+<i class="fas fa-store"></i>
+
+</div>
+
+<div class="nav-item"
+onclick="tab('p-track',this)">
+
+<i class="fas fa-box"></i>
+
+</div>
+
+<div id="admin-tab"
+class="nav-item"
+style="display:none"
+onclick="tab('p-owner',this)">
+
+<i class="fas fa-user-shield"></i>
+
+</div>
+
+</nav>
 
 <script>
 
 const firebaseConfig = {
-databaseURL:"https://talah-c12c5-default-rtdb.asia-southeast1.firebasedatabase.app/"
+
+databaseURL:
+"https://talah-c12c5-default-rtdb.asia-southeast1.firebasedatabase.app/"
+
 };
 
 firebase.initializeApp(firebaseConfig);
+
 const db = firebase.database();
 
-const CLOUD_NAME="dfbqpjtvm";
-const UPLOAD_PRESET="talla_preset";
+/* CLOUDINARY */
 
-let isAdmin=localStorage.getItem("admin")==="true";
+const CLOUD_NAME = "dfbqpjtvm";
 
-/* SETTINGS */
-function loadSettings(){
-db.ref("settings").on("value",s=>{
-if(s.exists()){
-let d=s.val();
-document.getElementById("site-name").innerText=d.name||"طَلَّة";
-document.getElementById("site-logo").src=d.logo||"";
-}
-});
-}
+const UPLOAD_PRESET = "talla_preset";
 
-loadSettings();
+/* ADMIN */
 
-/* ADMIN AUTH */
-function adminAuth(){
-let p=prompt("password");
-if(p==="2009257mama"){
-localStorage.setItem("admin","true");
-location.reload();
-}
-}
+let isAdmin =
+localStorage.getItem('tallah_admin') === 'true';
+
+window.onload = ()=>{
+
+trackVisit();
+
+syncProducts();
+
+syncSite();
 
 if(isAdmin){
-document.getElementById("adminBtn").style.display="block";
+
+document.getElementById('admin-tab')
+.style.display='block';
+
+syncStats();
+
+syncAdminOrders();
+
 }
 
-/* TAB */
-function tab(id){
-document.querySelectorAll(".page").forEach(e=>e.classList.remove("active"));
-document.getElementById(id).classList.add("active");
+};
+
+/* TRACK VISITS */
+
+function trackVisit(){
+
+db.ref('stats/visits')
+.transaction(c=>(c||0)+1);
+
 }
 
-/* SAVE SETTINGS */
-async function saveSettings(){
-let name=document.getElementById("set-name").value;
-let file=document.getElementById("set-logo").files[0];
+/* STATS */
 
-let logo="";
+function syncStats(){
 
-if(file){
-let fd=new FormData();
-fd.append("file",file);
-fd.append("upload_preset",UPLOAD_PRESET);
+db.ref('stats/visits')
+.on('value',s=>{
 
-let res=await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/upload`,{
-method:"POST",
-body:fd
+document.getElementById('visit-count')
+.innerText = s.val() || 0;
+
 });
 
-let data=await res.json();
-logo=data.secure_url;
+db.ref('stats/clicks')
+.on('value',s=>{
+
+document.getElementById('click-count')
+.innerText = s.val() || 0;
+
+});
+
+db.ref('orders')
+.on('value',s=>{
+
+document.getElementById('order-count')
+.innerText = s.numChildren();
+
+});
+
 }
 
-db.ref("settings").set({
-name:name,
-logo:logo||document.getElementById("site-logo").src
-});
+/* NAV */
 
-alert("تم الحفظ");
-}
+function tab(id,el){
 
-/* ADD PRODUCT */
-async function addProduct(){
+document.querySelectorAll('.page')
+.forEach(p=>p.classList.remove('active'));
 
-let file=document.getElementById("p-file").files[0];
+document.getElementById(id)
+.classList.add('active');
 
-let fd=new FormData();
-fd.append("file",file);
-fd.append("upload_preset",UPLOAD_PRESET);
+document.querySelectorAll('.nav-item')
+.forEach(n=>n.classList.remove('active'));
 
-let res=await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/upload`,{
-method:"POST",
-body:fd
-});
+el.classList.add('active');
 
-let data=await res.json();
-
-db.ref("products").push({
-title:document.getElementById("p-title").value,
-price:document.getElementById("p-price").value,
-old:document.getElementById("p-old").value,
-discount:document.getElementById("p-discount").value,
-link:document.getElementById("p-link").value,
-media:data.secure_url
-});
-
-alert("تم النشر");
 }
 
 /* PRODUCTS */
-db.ref("products").on("value",s=>{
-let box=document.getElementById("products");
-box.innerHTML="";
-s.forEach(i=>{
-let p=i.val();
-box.innerHTML+=`
-<div class="card">
-<img src="${p.media}" style="width:100%;border-radius:10px">
-<h4>${p.title}</h4>
-<p>${p.price} ج</p>
-<button class="btn-p" onclick="window.open('${p.link}')">اطلب</button>
-</div>`;
+
+function syncProducts(){
+
+db.ref('products')
+.on('value',snap=>{
+
+const list =
+document.getElementById('product-list');
+
+list.innerHTML = "";
+
+snap.forEach(c=>{
+
+const p = c.val();
+
+let media = p.type === 'video'
+
+?
+
+`<video
+src="${p.media}"
+autoplay
+muted
+loop
+playsinline
+onclick="openProductLink('${p.link||'#'}')">
+</video>`
+
+:
+
+`<img
+src="${p.media}"
+loading="lazy"
+onclick="openProductLink('${p.link||'#'}')">`;
+
+list.innerHTML += `
+
+<div class="p-card">
+
+<div class="p-img-box">
+
+${p.discount ?
+
+`<div class="discount">
+خصم ${p.discount}%
+</div>`
+
+: ""}
+
+${media}
+
+</div>
+
+<div class="p-info">
+
+<div class="p-title">
+
+${p.title}
+
+</div>
+
+${p.oldPrice ?
+
+`<div class="old-price">
+
+${p.oldPrice} ج.م
+
+</div>`
+
+: ""}
+
+<div class="new-price">
+
+${p.price} ج.م
+
+</div>
+
+<button
+class="btn btn-p"
+onclick="openOrderModal('${p.title}')">
+
+اطلبي الآن
+
+</button>
+
+${isAdmin ?
+
+`<button
+class="btn btn-r"
+onclick="delItem('products/${c.key}')">
+
+حذف المنتج
+
+</button>`
+
+: ""}
+
+</div>
+
+</div>
+
+`;
+
 });
+
 });
+
+}
+
+/* PRODUCT LINK */
+
+function openProductLink(link){
+
+if(!link || link==="#") return;
+
+db.ref('stats/clicks')
+.transaction(c=>(c||0)+1);
+
+window.open(link,'_blank');
+
+}
+
+/* UPLOAD PRODUCT */
+
+async function uploadProduct(){
+
+const title =
+document.getElementById('new-p-title').value;
+
+const oldPrice =
+document.getElementById('new-p-oldprice').value;
+
+const price =
+document.getElementById('new-p-price').value;
+
+const discount =
+document.getElementById('new-p-discount').value;
+
+const link =
+document.getElementById('new-p-link').value;
+
+const file =
+document.getElementById('new-p-file').files[0];
+
+if(!title || !price || !file)
+return Swal.fire('أكمل البيانات');
+
+Swal.fire({
+title:'جاري الرفع...',
+didOpen:()=>Swal.showLoading()
+});
+
+const formData = new FormData();
+
+formData.append('file',file);
+
+formData.append('upload_preset',UPLOAD_PRESET);
+
+try{
+
+const resp = await fetch(
+
+`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/upload`,
+
+{
+method:'POST',
+body:formData
+}
+
+);
+
+const result = await resp.json();
+
+const type =
+file.type.startsWith('video')
+? 'video'
+: 'image';
+
+await db.ref('products').push({
+
+title,
+oldPrice,
+price,
+discount,
+link,
+media:result.secure_url,
+type,
+createdAt:Date.now()
+
+});
+
+Swal.fire(
+'تم نشر المنتج',
+'',
+'success'
+);
+
+}catch(e){
+
+Swal.fire(
+'خطأ',
+'فشل رفع الملف',
+'error'
+);
+
+}
+
+}
+
+/* ORDER */
+
+async function openOrderModal(product){
+
+const {value:res} = await Swal.fire({
+
+title:'طلب '+product,
+
+html:`
+
+<input id="n"
+class="swal2-input"
+placeholder="الاسم">
+
+<input id="p"
+class="swal2-input"
+placeholder="رقم الهاتف">
+
+<textarea id="a"
+class="swal2-textarea"
+placeholder="العنوان"></textarea>
+
+`,
+
+preConfirm:()=>[
+
+document.getElementById('n').value,
+
+document.getElementById('p').value,
+
+document.getElementById('a').value
+
+]
+
+});
+
+if(res){
+
+await db.ref('orders').push({
+
+product,
+name:res[0],
+phone:res[1],
+address:res[2],
+status:'قيد المراجعة ⏳',
+time:Date.now()
+
+});
+
+Swal.fire(
+'تم الطلب بنجاح',
+'سيتم التواصل معك',
+'success'
+);
+
+}
+
+}
+
+/* ADMIN ORDERS */
+
+function syncAdminOrders(){
+
+db.ref('orders')
+.on('value',snap=>{
+
+const list =
+document.getElementById('admin-orders');
+
+list.innerHTML = "";
+
+snap.forEach(c=>{
+
+const o = c.val();
+
+list.innerHTML += `
+
+<div class="admin-card">
+
+<b>${o.product}</b>
+
+<p>👤 ${o.name}</p>
+
+<p>📞 ${o.phone}</p>
+
+<p>📍 ${o.address}</p>
+
+<p>🚚 ${o.status}</p>
+
+<select onchange="updateStatus('${c.key}',this.value)">
+
+<option value="">تحديث الحالة</option>
+
+<option value="تم التأكيد ✅">
+
+تم التأكيد
+
+</option>
+
+<option value="خرج للشحن 🚚">
+
+خرج للشحن
+
+</option>
+
+<option value="تم التسليم 🎉">
+
+تم التسليم
+
+</option>
+
+</select>
+
+<button
+class="btn btn-r"
+onclick="delItem('orders/${c.key}')">
+
+حذف
+
+</button>
+
+</div>
+
+`;
+
+});
+
+});
+
+}
+
+/* UPDATE STATUS */
+
+function updateStatus(id,status){
+
+if(!status) return;
+
+db.ref('orders/'+id)
+.update({status});
+
+Swal.fire('تم تحديث الحالة');
+
+}
 
 /* TRACK ORDER */
+
 function trackOrder(){
-let phone=document.getElementById("track-phone").value;
 
-db.ref("orders").orderByChild("phone").equalTo(phone).once("value",s=>{
-let box=document.getElementById("track-result");
-box.innerHTML="";
+const tel =
+document.getElementById('track-input').value;
 
-if(!s.exists()){
-box.innerHTML="لا يوجد طلبات";
+db.ref('orders')
+.orderByChild('phone')
+.equalTo(tel)
+.once('value',snap=>{
+
+const div =
+document.getElementById('track-results');
+
+div.innerHTML = "";
+
+if(!snap.exists()){
+
+div.innerHTML =
+"<p style='text-align:center'>لا يوجد طلبات</p>";
+
 return;
+
 }
 
-s.forEach(i=>{
-let o=i.val();
+snap.forEach(c=>{
 
-/* مهم: عرض الحالة فقط زي ما هي */
-box.innerHTML+=`
-<div class="card">
-<h4>${o.product}</h4>
-<p><b>${o.status}</b></p>
-<p>${o.total} ج</p>
-</div>`;
-});
-});
-}
+div.innerHTML += `
 
-/* ORDERS ADMIN */
-db.ref("orders").on("value",s=>{
-let box=document.getElementById("orders");
-box.innerHTML="";
-s.forEach(i=>{
-let o=i.val();
-
-box.innerHTML+=`
 <div class="admin-card">
-<p>${o.product}</p>
-<p>${o.phone}</p>
 
-<input value="${o.status}" onchange="updateStatus('${i.key}',this.value)">
+<h3>${c.val().product}</h3>
 
-</div>`;
+<p>${c.val().status}</p>
+
+</div>
+
+`;
+
 });
+
 });
 
-function updateStatus(id,val){
-db.ref("orders/"+id).update({status:val});
+}
+
+/* SAVE SITE INFO */
+
+async function saveSiteInfo(){
+
+const name =
+document.getElementById('set-name').value;
+
+const file =
+document.getElementById('set-logo').files[0];
+
+const updates = {};
+
+if(name)
+updates['site/name']=name;
+
+if(file){
+
+const formData = new FormData();
+
+formData.append('file',file);
+
+formData.append('upload_preset',UPLOAD_PRESET);
+
+const resp = await fetch(
+
+`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/upload`,
+
+{
+method:'POST',
+body:formData
+}
+
+);
+
+const result = await resp.json();
+
+updates['site/logo']=result.secure_url;
+
+}
+
+await db.ref().update(updates);
+
+Swal.fire('تم حفظ التعديلات');
+
+}
+
+/* SYNC SITE */
+
+function syncSite(){
+
+db.ref('site')
+.on('value',snap=>{
+
+const s = snap.val();
+
+if(!s) return;
+
+if(s.name){
+
+document.getElementById('site-name')
+.innerText = s.name;
+
+document.title = s.name;
+
+}
+
+if(s.logo){
+
+document.getElementById('site-logo')
+.src = s.logo;
+
+document.getElementById('site-logo')
+.style.display='block';
+
+}
+
+});
+
+}
+
+/* ADMIN LOGIN */
+
+async function adminAuth(){
+
+if(isAdmin){
+
+tab(
+'p-owner',
+document.getElementById('admin-tab')
+);
+
+return;
+
+}
+
+const {value:p} = await Swal.fire({
+
+title:'رمز المالك',
+
+input:'password'
+
+});
+
+if(p==="2009257mama"){
+
+localStorage.setItem(
+'tallah_admin',
+'true'
+);
+
+location.reload();
+
+}
+
+}
+
+/* THEME */
+
+function toggleTheme(){
+
+document.body.setAttribute(
+
+'data-theme',
+
+document.body.getAttribute('data-theme')
+=== 'dark'
+
+?
+
+''
+
+:
+
+'dark'
+
+);
+
+}
+
+/* DELETE */
+
+function delItem(path){
+
+if(confirm('متأكد من الحذف؟')){
+
+db.ref(path).remove();
+
+}
+
 }
 
 </script>
 
 </body>
+
 </html>
