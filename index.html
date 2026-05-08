@@ -8,7 +8,6 @@
     <meta property="og:title" content="متجر طَلَّة | شياكتك بتبدأ من هنا 👗">
     <meta property="og:description" content="أقوى كولكشن ملابس حريمي في مصر.. خامات أصلية وتوصيل لحد باب البيت.">
     <meta property="og:image" id="og-image-meta" content="https://res.cloudinary.com/dfbqpjtvm/image/upload/v1715171000/logo.png">
-    <meta property="og:url" content="https://talah.talah2026-2.workers.dev/">
 
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-database-compat.js"></script>
@@ -21,42 +20,27 @@
         :root { --p: #d4af37; --bg: #f8f9fa; --card: #ffffff; --t: #1a1a1a; --s: #34c759; --r: #ff3b30; --blue: #007aff; }
         [data-theme="dark"] { --bg: #0d0d0d; --card: #1c1c1e; --t: #ffffff; }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
-        body { background: var(--bg); color: var(--t); padding-bottom: 140px; transition: 0.3s; }
+        body { background: var(--bg); color: var(--t); padding-bottom: 140px; }
 
         header { background: var(--card); padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
         .logo-box { display: flex; align-items: center; gap: 10px; }
         #site-logo { width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--p); display: none; object-fit: cover; }
         
-        .container { max-width: 1200px; margin: 0 auto; padding: 10px; }
-        .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-        @media (min-width: 768px) { .grid { grid-template-columns: repeat(4, 1fr); } }
+        .p-card { background: var(--card); border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05); transition: 0.3s; position: relative; }
+        /* حل مشكلة ظهور الصورة كاملة */
+        .p-img-box { width: 100%; height: 300px; background: #f0f0f0; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        .p-img-box img, .p-img-box video { width: 100%; height: 100%; object-fit: contain; } /* لضمان ظهور الرأس والقدم */
 
-        .p-card { background: var(--card); border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05); transition: 0.3s; position: relative; border: 1px solid rgba(0,0,0,0.05); }
-        .p-img-box { width: 100%; height: 320px; background: #eee; display: flex; align-items: center; justify-content: center; overflow: hidden; cursor: pointer; }
-        /* حل مشكلة الصورة الكاملة (Object-fit contain) */
-        .p-img-box img, .p-img-box video { width: 100%; height: 100%; object-fit: contain; background: #f0f0f0; }
-
-        .p-info { padding: 12px; }
-        .p-price { color: var(--p); font-weight: 900; font-size: 18px; }
-        .old-price { text-decoration: line-through; color: #888; font-size: 13px; margin-right: 5px; }
-
-        .admin-card { background: var(--card); border-radius: 15px; padding: 15px; margin-bottom: 15px; border-right: 5px solid var(--p); box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        .stat-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 20px; }
+        .old-price { text-decoration: line-through; color: #888; font-size: 14px; margin-left: 8px; }
+        .admin-card { background: var(--card); border-radius: 15px; padding: 15px; margin-bottom: 15px; border-right: 5px solid var(--p); }
         
-        input, textarea, select { width: 100%; padding: 12px; margin: 8px 0; border-radius: 10px; border: 1px solid #ddd; background: var(--bg); color: var(--t); }
-        .btn-p { width: 100%; padding: 14px; border: none; border-radius: 10px; font-weight: bold; background: var(--p); color: #fff; cursor: pointer; }
+        /* زرار دخول جوجل مخفي تحت */
+        .login-footer { margin-top: 50px; text-align: center; padding: 20px; opacity: 0.6; }
         
-        .social-bar { position: fixed; bottom: 85px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 400px; display: flex; justify-content: center; gap: 20px; z-index: 999; }
-        .social-item { width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 20px; text-decoration: none; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
-        .wa { background: #25D366; } .fb { background: #1877F2; } .tk { background: #000000; border: 1px solid #fff; }
-
         nav { position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%); width: 92%; max-width: 500px; background: var(--card); border-radius: 25px; display: flex; justify-content: space-around; padding: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); z-index: 1000; }
         .nav-item { color: #8e8e93; font-size: 22px; cursor: pointer; }
-        .nav-item.active { color: var(--p); transform: translateY(-3px); }
-
-        .page { display: none; }
-        .page.active { display: block; }
-        .login-footer { text-align: center; padding: 20px; opacity: 0.5; margin-top: 40px; }
+        .nav-item.active { color: var(--p); }
+        .page { display: none; } .page.active { display: block; }
     </style>
 </head>
 <body>
@@ -64,68 +48,55 @@
 <header>
     <div class="logo-box">
         <img id="site-logo" src="">
-        <div style="font-weight:900; color:var(--p); display:flex; align-items:center; gap:5px">
-            <span id="site-name">طَلَّة</span>
-            <i class="fas fa-check-circle" style="color:var(--blue); font-size:14px"></i>
-        </div>
+        <div style="font-weight:900; color:var(--p);"> طَلَّة <i class="fas fa-check-circle"></i></div>
     </div>
     <div style="display:flex; gap:15px">
-        <i class="fas fa-moon" onclick="toggleTheme()" style="cursor:pointer"></i>
-        <i class="fas fa-crown" onclick="adminAuth()" style="color:var(--p); cursor:pointer"></i>
+        <i class="fas fa-moon" onclick="toggleTheme()"></i>
+        <i class="fas fa-crown" onclick="adminAuth()" style="color:var(--p)"></i>
     </div>
 </header>
 
-<div class="container">
+<div class="container" style="padding:10px;">
     <section id="p-shop" class="page active">
-        <div id="product-list" class="grid"></div>
+        <div id="product-list" class="grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;"></div>
         <div class="login-footer">
-            <button onclick="googleLogin()" style="background:none; border:none; color:var(--t); font-size:11px">تسجيل دخول (اختياري)</button>
+            <button onclick="googleLogin()" style="background:none; border:none; color:var(--t); font-size:12px;">تسجيل دخول الموظفين (Google)</button>
         </div>
     </section>
 
     <section id="p-track" class="page">
         <div class="admin-card">
-            <h3>🚚 تتبع حالة أوردرك</h3>
-            <input type="tel" id="track-input" placeholder="أدخل رقم الموبايل">
-            <button class="btn-p" onclick="trackOrder()">بحث عن الطلب</button>
+            <h3>🚚 تتبع طلبك الآن</h3>
+            <input type="tel" id="track-input" placeholder="اكتب رقم موبايلك هنا">
+            <button class="btn-p" style="width:100%; padding:10px; border-radius:8px;" onclick="trackOrder()">تتبع الحالة</button>
         </div>
         <div id="track-results"></div>
     </section>
 
     <section id="p-owner" class="page">
-        <div class="stat-grid">
-            <div class="admin-card" style="text-align:center"><h4 id="visit-count">0</h4><p style="font-size:10px">زيارة</p></div>
-            <div class="admin-card" style="text-align:center"><h4 id="order-count">0</h4><p style="font-size:10px">أوردر</p></div>
+        <div class="admin-card" style="display:flex; justify-content: space-around; text-align:center;">
+            <div><h4 id="visit-count">0</h4><p>زيارة</p></div>
+            <div><h4 id="order-count">0</h4><p>طلب</p></div>
         </div>
 
         <div class="admin-card">
-            <h3>📦 إضافة موديل جديد</h3>
+            <h3>📦 إضافة منتج (بالعرض)</h3>
             <input type="text" id="new-p-title" placeholder="اسم الموديل">
             <input type="number" id="new-p-price" placeholder="السعر الحالي">
             <input type="number" id="new-p-old-price" placeholder="السعر قبل الخصم (اختياري)">
-            <input type="text" id="new-p-link" placeholder="رابط الفيسبوك/الفيديو (عند الضغط على الصورة)">
+            <input type="text" id="new-p-link" placeholder="لينك الفيديو/الفيسبوك (عند الضغط على الصورة)">
             <input type="file" id="new-p-file" accept="image/*,video/*">
-            <button class="btn-p" onclick="uploadProduct()">نشر في الموقع</button>
+            <button class="btn-p" style="width:100%; padding:10px;" onclick="uploadProduct()">نشر الموديل</button>
         </div>
 
-        <h3 style="margin:15px 0">📩 الأوردرات الواردة</h3>
         <div id="admin-orders"></div>
-
-        <h3 style="margin:15px 0">👥 سجل الزيارات (جوجل)</h3>
-        <div id="visitor-logs" style="font-size:11px"></div>
     </section>
-</div>
-
-<div class="social-bar">
-    <a href="https://wa.me/201026482060" class="social-item wa" target="_blank"><i class="fab fa-whatsapp"></i></a>
-    <a href="https://www.facebook.com/ta1ah?locale=ar_AR" class="social-item fb" target="_blank"><i class="fab fa-facebook-f"></i></a>
-    <a href="https://www.tiktok.com/@talah.2026" class="social-item tk" target="_blank"><i class="fab fa-tiktok"></i></a>
 </div>
 
 <nav>
     <div class="nav-item active" onclick="tab('p-shop', this)"><i class="fas fa-store"></i></div>
     <div class="nav-item" onclick="tab('p-track', this)"><i class="fas fa-truck-loading"></i></div>
-    <div id="admin-tab" class="nav-item" style="display:none" onclick="tab('p-owner', this)"><i class="fas fa-user-shield"></i></div>
+    <div id="admin-tab" class="nav-item" style="display:none" onclick="tab('p-owner', this)"><i class="fas fa-chart-line"></i></div>
 </nav>
 
 <script>
@@ -138,40 +109,32 @@
     const UPLOAD_PRESET = "talla_preset";
     let isAdmin = localStorage.getItem('tallah_admin') === 'true';
 
-    window.onload = () => {
-        trackVisit();
-        syncSite();
-        syncProducts();
-        if(isAdmin) {
-            document.getElementById('admin-tab').style.display='block';
-            syncAdminOrders();
-            syncStats();
-            syncVisitorLogs();
-        }
-    };
-
-    function trackVisit() { db.ref('stats/visits').transaction(c => (c || 0) + 1); }
-
-    function syncStats() {
-        db.ref('stats/visits').on('value', s => { document.getElementById('visit-count').innerText = s.val() || 0; });
-        db.ref('orders').on('value', s => { document.getElementById('order-count').innerText = s.numChildren(); });
-    }
-
-    // تسجيل الدخول بجوجل
+    // تسجيل الدخول بجوجل لمعرفة "مين دخل"
     function googleLogin() {
         const provider = new firebase.auth.GoogleAuthProvider();
-        auth.signInWithPopup(provider).then(res => {
-            db.ref('visitor_logs').push({ name: res.user.displayName, email: res.user.email, time: new Date().toLocaleString('ar-EG') });
+        auth.signInWithPopup(provider).then((res) => {
+            db.ref('visitors_logs').push({ name: res.user.displayName, email: res.user.email, time: Date.now() });
             Swal.fire('أهلاً ' + res.user.displayName);
         });
     }
 
-    function syncVisitorLogs() {
-        db.ref('visitor_logs').limitToLast(10).on('value', snap => {
-            const div = document.getElementById('visitor-logs');
-            div.innerHTML = "";
+    // عرض المنتجات مع نظام العروض والروابط
+    function syncProducts() {
+        db.ref('products').on('value', snap => {
+            const list = document.getElementById('product-list');
+            list.innerHTML = "";
             snap.forEach(c => {
-                div.innerHTML += `<div class="admin-card" style="padding:5px">👤 ${c.val().name} (${c.val().email})</div>`;
+                const p = c.val();
+                let media = p.type === 'video' ? `<video src="${p.media}" autoplay muted loop playsinline></video>` : `<img src="${p.media}">`;
+                list.innerHTML += `
+                <div class="p-card">
+                    <div class="p-img-box" onclick="window.open('${p.link || '#'}', '_blank')">${media}</div>
+                    <div style="padding:10px;">
+                        <p style="font-weight:bold; font-size:14px;">${p.title}</p>
+                        <p class="p-price">${p.price} ج.م ${p.oldPrice ? `<span class="old-price">${p.oldPrice}</span>` : ''}</p>
+                        <button onclick="openOrderModal('${p.title}')" style="width:100%; background:var(--p); color:white; border:none; padding:8px; border-radius:5px;">اطلبي الآن</button>
+                    </div>
+                </div>`;
             });
         });
     }
@@ -183,8 +146,8 @@
         const link = document.getElementById('new-p-link').value;
         const file = document.getElementById('new-p-file').files[0];
 
-        if(!title || !file) return Swal.fire('بيانات ناقصة');
-        Swal.fire({ title: 'جاري النشر...', didOpen: () => Swal.showLoading() });
+        if(!title || !file) return Swal.fire('كمل البيانات يا هندسة');
+        Swal.fire({ title: 'جاري الرفع...', didOpen: () => Swal.showLoading() });
 
         const formData = new FormData();
         formData.append('file', file);
@@ -197,111 +160,43 @@
                 await db.ref('products').push({ title, price, oldPrice, link, media: result.secure_url, type: file.type.startsWith('video') ? 'video' : 'image' });
                 Swal.fire('تم النشر بنجاح!', '', 'success');
             }
-        } catch (e) { Swal.fire('خطأ في الرفع'); }
+        } catch (e) { Swal.fire('خطأ في الرفع، تأكد من إعدادات Cloudinary'); }
     }
 
-    function syncProducts() {
-        db.ref('products').on('value', snap => {
-            const list = document.getElementById('product-list');
-            list.innerHTML = "";
-            snap.forEach(c => {
-                const p = c.val();
-                let media = p.type === 'video' ? `<video src="${p.media}" autoplay muted loop playsinline></video>` : `<img src="${p.media}">`;
-                list.innerHTML += `
-                <div class="p-card">
-                    <div class="p-img-box" onclick="if('${p.link}') window.open('${p.link}', '_blank')">${media}</div>
-                    <div class="p-info">
-                        <div style="font-weight:700; height:35px; overflow:hidden">${p.title}</div>
-                        <div class="p-price">${p.price} ج.م ${p.oldPrice ? `<span class="old-price">${p.oldPrice}</span>` : ''}</div>
-                        <button class="btn-p" style="padding:8px; margin-top:10px" onclick="openOrderModal('${p.title}')">اطلبي الآن</button>
-                        ${isAdmin ? `<button onclick="delItem('products/${c.key}')" style="color:red; background:none; border:none; font-size:10px; width:100%; margin-top:5px">حذف</button>` : ''}
-                    </div>
-                </div>`;
-            });
-        });
-    }
-
-    async function openOrderModal(pName) {
-        const { value: res } = await Swal.fire({
-            title: 'طلب ' + pName,
-            html: `<input id="n" class="swal2-input" placeholder="الاسم الكامل">
-                   <input id="p" class="swal2-input" placeholder="رقم الموبايل">
-                   <input id="a" class="swal2-input" placeholder="العنوان">`,
-            preConfirm: () => [document.getElementById('n').value, document.getElementById('p').value, document.getElementById('a').value]
-        });
-        if(res && res[1]) {
-            const phone = res[1];
-            db.ref('orders').push({ product: pName, name: res[0], phone: phone, address: res[2], status: 'قيد المراجعة ⏳', time: Date.now() })
-            .then(() => {
-                Swal.fire('تم استلام طلبك!', 'سيتم توجيهك لصفحة التتبع', 'success');
-                tab('p-track', document.querySelectorAll('.nav-item')[1]);
-                document.getElementById('track-input').value = phone;
-                trackOrder();
-            });
-        }
-    }
-
-    function syncAdminOrders() {
-        db.ref('orders').on('value', snap => {
-            const list = document.getElementById('admin-orders');
-            list.innerHTML = "";
-            snap.forEach(child => {
-                const o = child.val();
-                list.innerHTML += `<div class="admin-card">
-                    <b>📦 ${o.product}</b><br>
-                    👤 ${o.name} | 📞 ${o.phone}<br>
-                    <select onchange="updateStatus('${child.key}', this.value)">
-                        <option value="">تحديث الحالة (${o.status})</option>
-                        <option value="تم قبول الطلب ✅">قبول</option>
-                        <option value="خرج للشحن 🚚">شحن</option>
-                        <option value="تم التوصيل 🎉">تم التوصيل</option>
-                        <option value="تم الرفض ❌">رفض</option>
-                    </select>
-                    <button onclick="delItem('orders/${child.key}')" style="color:red; background:none; border:none; float:left">حذف</button>
-                </div>`;
-            });
-        });
-    }
-
-    function updateStatus(id, s) { if(s) db.ref(`orders/${id}`).update({ status: s }).then(() => Swal.fire('تم التحديث')); }
-
+    // تتبع الأوردر برقم الموبايل
     function trackOrder() {
         const tel = document.getElementById('track-input').value;
         db.ref('orders').orderByChild('phone').equalTo(tel).on('value', snap => {
             const div = document.getElementById('track-results');
             div.innerHTML = "";
-            if(!snap.exists()) return div.innerHTML = "<p style='text-align:center'>مفيش أوردرات للرقم ده</p>";
+            if(!snap.exists()) return div.innerHTML = "<p style='text-align:center'>مفيش أوردرات بالرقم ده</p>";
             snap.forEach(c => {
-                div.innerHTML += `<div class="admin-card">📦 موديل: ${c.val().product}<br><b>الحالة: ${c.val().status}</b></div>`;
+                div.innerHTML += `<div class="admin-card">📦 موديل: ${c.val().product}<br><b style="color:var(--p)">الحالة: ${c.val().status}</b></div>`;
             });
         });
     }
 
-    function tab(id, el) {
-        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    // إدارة الحالة من لوحة المالك
+    function updateStatus(id, s, phone) {
+        db.ref(`orders/${id}`).update({ status: s }).then(() => {
+            Swal.fire('تم تحديث الحالة');
+            // هنا ممكن تبعت إشعار لو حابب مستقبلاً
+        });
+    }
+
+    // الوظائف الأساسية
+    window.onload = () => { syncProducts(); if(isAdmin) { document.getElementById('admin-tab').style.display='block'; syncAdminOrders(); } };
+    function tab(id, el) { 
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active')); 
         document.getElementById(id).classList.add('active');
         document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
         el.classList.add('active');
     }
-
     async function adminAuth() {
-        if(isAdmin) return tab('p-owner', document.getElementById('admin-tab'));
         const { value: p } = await Swal.fire({ title: 'رمز المالك', input: 'password' });
         if(p === "2009257mama") { localStorage.setItem('tallah_admin', 'true'); location.reload(); }
     }
-
     function toggleTheme() { document.body.setAttribute('data-theme', document.body.getAttribute('data-theme')==='dark'?'':'dark'); }
-    function delItem(path) { if(confirm('متأكد؟')) db.ref(path).remove(); }
-
-    function syncSite() {
-        db.ref('site').on('value', snap => {
-            const s = snap.val();
-            if(s) {
-                if(s.name) document.getElementById('site-name').innerText = s.name;
-                if(s.logo) { document.getElementById('site-logo').src = s.logo; document.getElementById('site-logo').style.display='block'; }
-            }
-        });
-    }
 </script>
 </body>
 </html>
