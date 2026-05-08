@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 <title>متجر طَلَّة | الشياكة تبدأ من هنا</title>
 
@@ -17,15 +20,17 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap"
+rel="stylesheet">
 
 <style>
 
 :root{
 --p:#d4af37;
---bg:#f7f7f7;
+--bg:#f6f6f6;
 --card:#ffffff;
 --t:#111111;
 --s:#34c759;
@@ -34,7 +39,7 @@
 }
 
 [data-theme="dark"]{
---bg:#0f0f0f;
+--bg:#0d0d0d;
 --card:#1c1c1e;
 --t:#ffffff;
 }
@@ -61,7 +66,7 @@ padding:15px 20px;
 display:flex;
 justify-content:space-between;
 align-items:center;
-box-shadow:0 2px 15px rgba(0,0,0,.08);
+box-shadow:0 3px 15px rgba(0,0,0,.08);
 }
 
 .logo-box{
@@ -103,11 +108,10 @@ border-radius:18px;
 overflow:hidden;
 box-shadow:0 5px 20px rgba(0,0,0,.07);
 transition:.3s;
-position:relative;
 }
 
 .p-card:hover{
-transform:translateY(-5px);
+transform:translateY(-4px);
 }
 
 .p-img-box{
@@ -148,23 +152,23 @@ padding:14px;
 }
 
 .p-title{
+font-size:18px;
 font-weight:800;
 min-height:45px;
-font-size:18px;
 }
 
 .old-price{
 text-decoration:line-through;
-color:#999;
 font-size:14px;
-margin-top:5px;
+color:#999;
+margin-top:4px;
 }
 
 .new-price{
-font-size:24px;
+font-size:25px;
 font-weight:900;
 color:var(--p);
-margin-top:3px;
+margin-top:4px;
 }
 
 .btn{
@@ -172,8 +176,8 @@ width:100%;
 padding:14px;
 border:none;
 border-radius:12px;
-font-weight:bold;
 cursor:pointer;
+font-weight:bold;
 margin-top:10px;
 font-size:16px;
 }
@@ -191,9 +195,9 @@ color:#fff;
 .admin-card{
 background:var(--card);
 padding:15px;
-border-radius:15px;
+border-radius:16px;
 margin-bottom:15px;
-box-shadow:0 4px 15px rgba(0,0,0,.05);
+box-shadow:0 5px 15px rgba(0,0,0,.05);
 }
 
 .stat-card{
@@ -205,9 +209,9 @@ textarea,
 select{
 width:100%;
 padding:13px;
+margin-top:10px;
 border-radius:12px;
 border:1px solid #ddd;
-margin-top:10px;
 background:var(--bg);
 color:var(--t);
 }
@@ -230,8 +234,8 @@ z-index:1000;
 
 .nav-item{
 font-size:22px;
-color:#888;
 cursor:pointer;
+color:#888;
 }
 
 .nav-item.active{
@@ -263,8 +267,8 @@ border-radius:50%;
 display:flex;
 align-items:center;
 justify-content:center;
-color:#fff;
 font-size:22px;
+color:#fff;
 text-decoration:none;
 box-shadow:0 5px 15px rgba(0,0,0,.2);
 }
@@ -274,6 +278,7 @@ box-shadow:0 5px 15px rgba(0,0,0,.2);
 .tk{background:#000;}
 
 </style>
+
 </head>
 
 <body>
@@ -285,17 +290,25 @@ box-shadow:0 5px 15px rgba(0,0,0,.2);
 <img id="site-logo">
 
 <div style="font-size:24px;font-weight:900;color:var(--p)">
+
 <span id="site-name">طَلَّة</span>
-<i class="fas fa-check-circle" style="color:#007aff;font-size:15px"></i>
+
+<i class="fas fa-check-circle"
+style="color:#007aff;font-size:14px"></i>
+
 </div>
 
 </div>
 
 <div style="display:flex;gap:15px">
 
-<i class="fas fa-moon" onclick="toggleTheme()" style="cursor:pointer"></i>
+<i class="fas fa-moon"
+onclick="toggleTheme()"
+style="cursor:pointer"></i>
 
-<i class="fas fa-crown" onclick="adminAuth()" style="cursor:pointer;color:var(--p)"></i>
+<i class="fas fa-crown"
+onclick="adminAuth()"
+style="cursor:pointer;color:var(--p)"></i>
 
 </div>
 
@@ -315,10 +328,15 @@ box-shadow:0 5px 15px rgba(0,0,0,.2);
 
 <h2>تتبع الطلب</h2>
 
-<input type="tel" id="track-input" placeholder="رقم الموبايل">
+<input type="tel"
+id="track-input"
+placeholder="رقم الموبايل">
 
-<button class="btn btn-p" onclick="trackOrder()">
+<button class="btn btn-p"
+onclick="trackOrder()">
+
 تتبع الآن
+
 </button>
 
 </div>
@@ -367,39 +385,65 @@ box-shadow:0 5px 15px rgba(0,0,0,.2);
 
 <h2>إعدادات البراند</h2>
 
-<input type="text" id="set-name" placeholder="اسم البراند">
+<input type="text"
+id="set-name"
+placeholder="اسم البراند">
 
-<input type="file" id="set-logo" accept="image/*">
+<input type="file"
+id="set-logo"
+accept="image/*">
 
-<button class="btn btn-p" onclick="saveSiteInfo()">
-حفظ
+<button class="btn btn-p"
+onclick="saveSiteInfo()">
+
+حفظ التعديلات
+
 </button>
 
 </div>
 
 <div class="admin-card">
 
-<h2>إضافة منتج</h2>
+<h2>إضافة منتج جديد</h2>
 
-<input type="text" id="new-p-title" placeholder="اسم المنتج">
+<input type="text"
+id="new-p-title"
+placeholder="اسم المنتج">
 
-<input type="number" id="new-p-oldprice" placeholder="السعر قبل الخصم">
+<input type="number"
+id="new-p-oldprice"
+placeholder="السعر قبل الخصم">
 
-<input type="number" id="new-p-price" placeholder="السعر الحالي">
+<input type="number"
+id="new-p-price"
+placeholder="السعر الحالي">
 
-<input type="number" id="new-p-discount" placeholder="نسبة الخصم %">
+<input type="number"
+id="new-p-discount"
+placeholder="نسبة الخصم %">
 
-<input type="url" id="new-p-link" placeholder="لينك الفيديو أو المنشور">
+<input type="url"
+id="new-p-link"
+placeholder="لينك الفيديو أو المنشور">
 
-<input type="file" id="new-p-file" accept="image/*,video/*">
+<input type="file"
+id="new-p-file"
+accept="image/*,video/*">
 
-<button class="btn btn-p" onclick="uploadProduct()">
+<button class="btn btn-p"
+onclick="uploadProduct()">
+
 نشر المنتج
+
 </button>
 
 </div>
 
-<h2 style="margin:15px 0">إدارة الطلبات</h2>
+<h2 style="margin:15px 0">
+
+إدارة الطلبات
+
+</h2>
 
 <div id="admin-orders"></div>
 
@@ -409,32 +453,55 @@ box-shadow:0 5px 15px rgba(0,0,0,.2);
 
 <div class="social-bar">
 
-<a href="https://wa.me/201026482060" class="social-item wa" target="_blank">
+<a href="https://wa.me/201026482060"
+class="social-item wa"
+target="_blank">
+
 <i class="fab fa-whatsapp"></i>
+
 </a>
 
-<a href="https://facebook.com" class="social-item fb" target="_blank">
+<a href="https://facebook.com"
+class="social-item fb"
+target="_blank">
+
 <i class="fab fa-facebook-f"></i>
+
 </a>
 
-<a href="https://tiktok.com" class="social-item tk" target="_blank">
+<a href="https://tiktok.com"
+class="social-item tk"
+target="_blank">
+
 <i class="fab fa-tiktok"></i>
+
 </a>
 
 </div>
 
 <nav>
 
-<div class="nav-item active" onclick="tab('p-shop',this)">
+<div class="nav-item active"
+onclick="tab('p-shop',this)">
+
 <i class="fas fa-store"></i>
+
 </div>
 
-<div class="nav-item" onclick="tab('p-track',this)">
+<div class="nav-item"
+onclick="tab('p-track',this)">
+
 <i class="fas fa-box"></i>
+
 </div>
 
-<div id="admin-tab" class="nav-item" style="display:none" onclick="tab('p-owner',this)">
+<div id="admin-tab"
+class="nav-item"
+style="display:none"
+onclick="tab('p-owner',this)">
+
 <i class="fas fa-user-shield"></i>
+
 </div>
 
 </nav>
@@ -443,7 +510,8 @@ box-shadow:0 5px 15px rgba(0,0,0,.2);
 
 const firebaseConfig = {
 
-databaseURL:"https://YOUR_DATABASE.firebaseio.com/"
+databaseURL:
+"https://talah-c12c5-default-rtdb.asia-southeast1.firebasedatabase.app/"
 
 };
 
@@ -451,8 +519,13 @@ firebase.initializeApp(firebaseConfig);
 
 const db = firebase.database();
 
-const CLOUD_NAME = "YOUR_CLOUD_NAME";
-const UPLOAD_PRESET = "YOUR_UPLOAD_PRESET";
+/* CLOUDINARY */
+
+const CLOUD_NAME = "dfbqpjtvm";
+
+const UPLOAD_PRESET = "talla_preset";
+
+/* ADMIN */
 
 let isAdmin =
 localStorage.getItem('tallah_admin') === 'true';
@@ -467,15 +540,18 @@ syncSite();
 
 if(isAdmin){
 
-document.getElementById('admin-tab').style.display='block';
-
-syncAdminOrders();
+document.getElementById('admin-tab')
+.style.display='block';
 
 syncStats();
+
+syncAdminOrders();
 
 }
 
 };
+
+/* TRACK VISITS */
 
 function trackVisit(){
 
@@ -484,30 +560,37 @@ db.ref('stats/visits')
 
 }
 
+/* STATS */
+
 function syncStats(){
 
-db.ref('stats/visits').on('value',s=>{
+db.ref('stats/visits')
+.on('value',s=>{
 
-document.getElementById('visit-count').innerText =
-s.val() || 0;
-
-});
-
-db.ref('stats/clicks').on('value',s=>{
-
-document.getElementById('click-count').innerText =
-s.val() || 0;
+document.getElementById('visit-count')
+.innerText = s.val() || 0;
 
 });
 
-db.ref('orders').on('value',s=>{
+db.ref('stats/clicks')
+.on('value',s=>{
 
-document.getElementById('order-count').innerText =
-s.numChildren();
+document.getElementById('click-count')
+.innerText = s.val() || 0;
+
+});
+
+db.ref('orders')
+.on('value',s=>{
+
+document.getElementById('order-count')
+.innerText = s.numChildren();
 
 });
 
 }
+
+/* NAV */
 
 function tab(id,el){
 
@@ -524,9 +607,12 @@ el.classList.add('active');
 
 }
 
+/* PRODUCTS */
+
 function syncProducts(){
 
-db.ref('products').on('value',snap=>{
+db.ref('products')
+.on('value',snap=>{
 
 const list =
 document.getElementById('product-list');
@@ -578,19 +664,25 @@ ${media}
 <div class="p-info">
 
 <div class="p-title">
+
 ${p.title}
+
 </div>
 
 ${p.oldPrice ?
 
 `<div class="old-price">
+
 ${p.oldPrice} ج.م
+
 </div>`
 
 : ""}
 
 <div class="new-price">
+
 ${p.price} ج.م
+
 </div>
 
 <button
@@ -625,6 +717,8 @@ onclick="delItem('products/${c.key}')">
 
 }
 
+/* PRODUCT LINK */
+
 function openProductLink(link){
 
 if(!link || link==="#") return;
@@ -635,6 +729,8 @@ db.ref('stats/clicks')
 window.open(link,'_blank');
 
 }
+
+/* UPLOAD PRODUCT */
 
 async function uploadProduct(){
 
@@ -704,7 +800,7 @@ createdAt:Date.now()
 });
 
 Swal.fire(
-'تم النشر بنجاح',
+'تم نشر المنتج',
 '',
 'success'
 );
@@ -713,13 +809,15 @@ Swal.fire(
 
 Swal.fire(
 'خطأ',
-'فشل رفع المنتج',
+'فشل رفع الملف',
 'error'
 );
 
 }
 
 }
+
+/* ORDER */
 
 async function openOrderModal(product){
 
@@ -729,11 +827,17 @@ title:'طلب '+product,
 
 html:`
 
-<input id="n" class="swal2-input" placeholder="الاسم">
+<input id="n"
+class="swal2-input"
+placeholder="الاسم">
 
-<input id="p" class="swal2-input" placeholder="رقم الهاتف">
+<input id="p"
+class="swal2-input"
+placeholder="رقم الهاتف">
 
-<textarea id="a" class="swal2-textarea" placeholder="العنوان"></textarea>
+<textarea id="a"
+class="swal2-textarea"
+placeholder="العنوان"></textarea>
 
 `,
 
@@ -757,7 +861,7 @@ product,
 name:res[0],
 phone:res[1],
 address:res[2],
-status:'قيد المراجعة',
+status:'قيد المراجعة ⏳',
 time:Date.now()
 
 });
@@ -772,9 +876,12 @@ Swal.fire(
 
 }
 
+/* ADMIN ORDERS */
+
 function syncAdminOrders(){
 
-db.ref('orders').on('value',snap=>{
+db.ref('orders')
+.on('value',snap=>{
 
 const list =
 document.getElementById('admin-orders');
@@ -791,28 +898,34 @@ list.innerHTML += `
 
 <b>${o.product}</b>
 
-<p>${o.name}</p>
+<p>👤 ${o.name}</p>
 
-<p>${o.phone}</p>
+<p>📞 ${o.phone}</p>
 
-<p>${o.address}</p>
+<p>📍 ${o.address}</p>
 
-<p>${o.status}</p>
+<p>🚚 ${o.status}</p>
 
 <select onchange="updateStatus('${c.key}',this.value)">
 
 <option value="">تحديث الحالة</option>
 
-<option value="تم التأكيد">
+<option value="تم التأكيد ✅">
+
 تم التأكيد
+
 </option>
 
-<option value="جاري الشحن">
-جاري الشحن
+<option value="خرج للشحن 🚚">
+
+خرج للشحن
+
 </option>
 
-<option value="تم التسليم">
+<option value="تم التسليم 🎉">
+
 تم التسليم
+
 </option>
 
 </select>
@@ -835,6 +948,8 @@ onclick="delItem('orders/${c.key}')">
 
 }
 
+/* UPDATE STATUS */
+
 function updateStatus(id,status){
 
 if(!status) return;
@@ -842,9 +957,11 @@ if(!status) return;
 db.ref('orders/'+id)
 .update({status});
 
-Swal.fire('تم التحديث');
+Swal.fire('تم تحديث الحالة');
 
 }
+
+/* TRACK ORDER */
 
 function trackOrder(){
 
@@ -890,6 +1007,8 @@ div.innerHTML += `
 
 }
 
+/* SAVE SITE INFO */
+
 async function saveSiteInfo(){
 
 const name =
@@ -930,13 +1049,16 @@ updates['site/logo']=result.secure_url;
 
 await db.ref().update(updates);
 
-Swal.fire('تم الحفظ');
+Swal.fire('تم حفظ التعديلات');
 
 }
 
+/* SYNC SITE */
+
 function syncSite(){
 
-db.ref('site').on('value',snap=>{
+db.ref('site')
+.on('value',snap=>{
 
 const s = snap.val();
 
@@ -964,6 +1086,8 @@ document.getElementById('site-logo')
 });
 
 }
+
+/* ADMIN LOGIN */
 
 async function adminAuth(){
 
@@ -999,6 +1123,8 @@ location.reload();
 
 }
 
+/* THEME */
+
 function toggleTheme(){
 
 document.body.setAttribute(
@@ -1020,9 +1146,11 @@ document.body.getAttribute('data-theme')
 
 }
 
+/* DELETE */
+
 function delItem(path){
 
-if(confirm('متأكد؟')){
+if(confirm('متأكد من الحذف؟')){
 
 db.ref(path).remove();
 
@@ -1033,4 +1161,5 @@ db.ref(path).remove();
 </script>
 
 </body>
+
 </html>
