@@ -10,9 +10,12 @@ content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable
 
 <title>متجر طَلَّة | الشياكة تبدأ من هنا</title>
 
-<meta property="og:title" content="متجر طَلَّة">
-<meta property="og:description" content="أقوى كولكشن ملابس حريمي">
-<meta property="og:image" id="og-image-meta" content="">
+<meta name="description"
+content="أقوى كولكشن ملابس حريمي بأفخم الخامات وأحدث الموديلات مع شحن سريع لكل المحافظات والدفع عند الاستلام.">
+
+<meta property="og:title" content="متجر طَلَّة | الشياكة تبدأ من هنا">
+<meta property="og:description" content="أحدث كولكشن ملابس حريمي بأفخم الخامات والتوصيل لكل المحافظات">
+<meta property="og:image" content="https://i.postimg.cc/your-logo.png">
 <meta property="og:type" content="website">
 
 <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
@@ -80,7 +83,7 @@ width:45px;
 height:45px;
 border-radius:50%;
 object-fit:cover;
-display:none;
+display:block;
 border:2px solid var(--p);
 }
 
@@ -123,15 +126,18 @@ align-items:center;
 justify-content:center;
 overflow:hidden;
 position:relative;
+padding:10px;
 }
 
 .p-img-box img,
 .p-img-box video{
-width:100%;
-height:100%;
+width:92%;
+height:92%;
 object-fit:contain;
 background:#fff;
 cursor:pointer;
+border-radius:14px;
+transition:.3s;
 }
 
 .discount{
@@ -169,6 +175,15 @@ font-size:25px;
 font-weight:900;
 color:var(--p);
 margin-top:4px;
+}
+
+.total-box{
+margin-top:10px;
+padding:10px;
+background:#f7f7f7;
+border-radius:12px;
+font-weight:bold;
+text-align:center;
 }
 
 .btn{
@@ -277,6 +292,30 @@ box-shadow:0 5px 15px rgba(0,0,0,.2);
 .fb{background:#1877F2;}
 .tk{background:#000;}
 
+.invoice{
+padding:15px;
+text-align:right;
+line-height:2;
+}
+
+.owner-box{
+margin-top:20px;
+text-align:center;
+padding:20px;
+background:var(--card);
+border-radius:20px;
+box-shadow:0 5px 15px rgba(0,0,0,.08);
+}
+
+.owner-box img{
+width:90px;
+height:90px;
+border-radius:50%;
+object-fit:cover;
+border:3px solid var(--p);
+margin-bottom:10px;
+}
+
 </style>
 
 </head>
@@ -287,7 +326,8 @@ box-shadow:0 5px 15px rgba(0,0,0,.2);
 
 <div class="logo-box">
 
-<img id="site-logo">
+<img id="site-logo"
+src="https://i.postimg.cc/your-logo.png">
 
 <div style="font-size:24px;font-weight:900;color:var(--p)">
 
@@ -319,6 +359,18 @@ style="cursor:pointer;color:var(--p)"></i>
 <section id="p-shop" class="page active">
 
 <div id="product-list" class="grid"></div>
+
+<div class="owner-box">
+
+<img src="https://i.postimg.cc/your-logo.png">
+
+<h2>Mahmoud Mohamed</h2>
+
+<p style="margin-top:8px">
+أفخم كولكشن حريمي بأعلى جودة وخامات مستوردة
+</p>
+
+</div>
 
 </section>
 
@@ -383,27 +435,6 @@ onclick="trackOrder()">
 
 <div class="admin-card">
 
-<h2>إعدادات البراند</h2>
-
-<input type="text"
-id="set-name"
-placeholder="اسم البراند">
-
-<input type="file"
-id="set-logo"
-accept="image/*">
-
-<button class="btn btn-p"
-onclick="saveSiteInfo()">
-
-حفظ التعديلات
-
-</button>
-
-</div>
-
-<div class="admin-card">
-
 <h2>إضافة منتج جديد</h2>
 
 <input type="text"
@@ -461,7 +492,7 @@ target="_blank">
 
 </a>
 
-<a href="https://facebook.com"
+<a href="https://facebook.com/USERNAME"
 class="social-item fb"
 target="_blank">
 
@@ -469,7 +500,7 @@ target="_blank">
 
 </a>
 
-<a href="https://tiktok.com"
+<a href="https://tiktok.com/@USERNAME"
 class="social-item tk"
 target="_blank">
 
@@ -519,13 +550,9 @@ firebase.initializeApp(firebaseConfig);
 
 const db = firebase.database();
 
-/* CLOUDINARY */
-
 const CLOUD_NAME = "dfbqpjtvm";
 
 const UPLOAD_PRESET = "talla_preset";
-
-/* ADMIN */
 
 let isAdmin =
 localStorage.getItem('tallah_admin') === 'true';
@@ -535,8 +562,6 @@ window.onload = ()=>{
 trackVisit();
 
 syncProducts();
-
-syncSite();
 
 if(isAdmin){
 
@@ -551,16 +576,12 @@ syncAdminOrders();
 
 };
 
-/* TRACK VISITS */
-
 function trackVisit(){
 
 db.ref('stats/visits')
 .transaction(c=>(c||0)+1);
 
 }
-
-/* STATS */
 
 function syncStats(){
 
@@ -590,8 +611,6 @@ document.getElementById('order-count')
 
 }
 
-/* NAV */
-
 function tab(id,el){
 
 document.querySelectorAll('.page')
@@ -606,8 +625,6 @@ document.querySelectorAll('.nav-item')
 el.classList.add('active');
 
 }
-
-/* PRODUCTS */
 
 function syncProducts(){
 
@@ -687,7 +704,7 @@ ${p.price} ج.م
 
 <button
 class="btn btn-p"
-onclick="openOrderModal('${p.title}')">
+onclick="openOrderModal('${p.title}','${p.price}','${p.media}')">
 
 اطلبي الآن
 
@@ -717,8 +734,6 @@ onclick="delItem('products/${c.key}')">
 
 }
 
-/* PRODUCT LINK */
-
 function openProductLink(link){
 
 if(!link || link==="#") return;
@@ -729,8 +744,6 @@ db.ref('stats/clicks')
 window.open(link,'_blank');
 
 }
-
-/* UPLOAD PRODUCT */
 
 async function uploadProduct(){
 
@@ -817,9 +830,7 @@ Swal.fire(
 
 }
 
-/* ORDER */
-
-async function openOrderModal(product){
+async function openOrderModal(product,price,image){
 
 const {value:res} = await Swal.fire({
 
@@ -829,24 +840,62 @@ html:`
 
 <input id="n"
 class="swal2-input"
-placeholder="الاسم">
+placeholder="الاسم الكامل">
 
 <input id="p"
 class="swal2-input"
 placeholder="رقم الهاتف">
 
+<input id="color"
+class="swal2-input"
+placeholder="اللون المطلوب">
+
+<input id="size"
+class="swal2-input"
+placeholder="المقاس">
+
+<select id="gov" class="swal2-input">
+
+<option value="">اختر المحافظة</option>
+
+<option value="50">القاهرة</option>
+<option value="50">الإسكندرية</option>
+<option value="70">الجيزة</option>
+<option value="70">القليوبية</option>
+<option value="70">الشرقية</option>
+<option value="70">الغربية</option>
+<option value="70">المنوفية</option>
+<option value="70">الدقهلية</option>
+<option value="70">البحيرة</option>
+<option value="70">كفر الشيخ</option>
+<option value="70">دمياط</option>
+<option value="70">بورسعيد</option>
+<option value="70">الإسماعيلية</option>
+<option value="70">السويس</option>
+<option value="70">الفيوم</option>
+<option value="70">بني سويف</option>
+<option value="70">المنيا</option>
+<option value="70">أسيوط</option>
+<option value="70">سوهاج</option>
+<option value="70">قنا</option>
+<option value="70">الأقصر</option>
+<option value="70">أسوان</option>
+
+</select>
+
 <textarea id="a"
 class="swal2-textarea"
-placeholder="العنوان"></textarea>
+placeholder="العنوان بالتفصيل"></textarea>
 
 `,
 
 preConfirm:()=>[
 
 document.getElementById('n').value,
-
 document.getElementById('p').value,
-
+document.getElementById('color').value,
+document.getElementById('size').value,
+document.getElementById('gov').value,
 document.getElementById('a').value
 
 ]
@@ -855,28 +904,78 @@ document.getElementById('a').value
 
 if(res){
 
+let shipping = Number(res[4]);
+
+let total = Number(price) + shipping;
+
 await db.ref('orders').push({
 
 product,
+price,
+shipping,
+total,
+image,
 name:res[0],
 phone:res[1],
-address:res[2],
+color:res[2],
+size:res[3],
+address:res[5],
 status:'قيد المراجعة ⏳',
 time:Date.now()
 
 });
 
-Swal.fire(
-'تم الطلب بنجاح',
-'سيتم التواصل معك',
-'success'
+Swal.fire({
+
+icon:'success',
+
+title:'تم الطلب بنجاح',
+
+html:`
+
+<div class="invoice">
+
+<h2>فاتورة الطلب</h2>
+
+<p>👤 ${res[0]}</p>
+
+<p>📞 ${res[1]}</p>
+
+<p>🎨 ${res[2]}</p>
+
+<p>📏 ${res[3]}</p>
+
+<p>🚚 الشحن: ${shipping} ج</p>
+
+<p>💰 الإجمالي: ${total} ج</p>
+
+<p>📍 ${res[5]}</p>
+
+<p style="margin-top:15px;color:#25D366">
+
+للتواصل واتساب:
+01210538657
+
+</p>
+
+</div>
+
+`
+
+});
+
+tab(
+'p-track',
+document.querySelectorAll('.nav-item')[1]
 );
 
-}
+document.getElementById('track-input').value = res[1];
+
+trackOrder();
 
 }
 
-/* ADMIN ORDERS */
+}
 
 function syncAdminOrders(){
 
@@ -896,15 +995,26 @@ list.innerHTML += `
 
 <div class="admin-card">
 
+<img src="${o.image}"
+style="width:100%;border-radius:15px;margin-bottom:10px">
+
 <b>${o.product}</b>
 
 <p>👤 ${o.name}</p>
 
 <p>📞 ${o.phone}</p>
 
+<p>🎨 ${o.color}</p>
+
+<p>📏 ${o.size}</p>
+
 <p>📍 ${o.address}</p>
 
-<p>🚚 ${o.status}</p>
+<p>🚚 ${o.shipping} ج</p>
+
+<p>💰 ${o.total} ج</p>
+
+<p>📦 ${o.status}</p>
 
 <select onchange="updateStatus('${c.key}',this.value)">
 
@@ -948,8 +1058,6 @@ onclick="delItem('orders/${c.key}')">
 
 }
 
-/* UPDATE STATUS */
-
 function updateStatus(id,status){
 
 if(!status) return;
@@ -960,8 +1068,6 @@ db.ref('orders/'+id)
 Swal.fire('تم تحديث الحالة');
 
 }
-
-/* TRACK ORDER */
 
 function trackOrder(){
 
@@ -993,9 +1099,14 @@ div.innerHTML += `
 
 <div class="admin-card">
 
+<img src="${c.val().image}"
+style="width:100%;border-radius:15px;margin-bottom:10px">
+
 <h3>${c.val().product}</h3>
 
-<p>${c.val().status}</p>
+<p>الحالة: ${c.val().status}</p>
+
+<p>الإجمالي: ${c.val().total} ج</p>
 
 </div>
 
@@ -1006,88 +1117,6 @@ div.innerHTML += `
 });
 
 }
-
-/* SAVE SITE INFO */
-
-async function saveSiteInfo(){
-
-const name =
-document.getElementById('set-name').value;
-
-const file =
-document.getElementById('set-logo').files[0];
-
-const updates = {};
-
-if(name)
-updates['site/name']=name;
-
-if(file){
-
-const formData = new FormData();
-
-formData.append('file',file);
-
-formData.append('upload_preset',UPLOAD_PRESET);
-
-const resp = await fetch(
-
-`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/upload`,
-
-{
-method:'POST',
-body:formData
-}
-
-);
-
-const result = await resp.json();
-
-updates['site/logo']=result.secure_url;
-
-}
-
-await db.ref().update(updates);
-
-Swal.fire('تم حفظ التعديلات');
-
-}
-
-/* SYNC SITE */
-
-function syncSite(){
-
-db.ref('site')
-.on('value',snap=>{
-
-const s = snap.val();
-
-if(!s) return;
-
-if(s.name){
-
-document.getElementById('site-name')
-.innerText = s.name;
-
-document.title = s.name;
-
-}
-
-if(s.logo){
-
-document.getElementById('site-logo')
-.src = s.logo;
-
-document.getElementById('site-logo')
-.style.display='block';
-
-}
-
-});
-
-}
-
-/* ADMIN LOGIN */
 
 async function adminAuth(){
 
@@ -1123,8 +1152,6 @@ location.reload();
 
 }
 
-/* THEME */
-
 function toggleTheme(){
 
 document.body.setAttribute(
@@ -1145,8 +1172,6 @@ document.body.getAttribute('data-theme')
 );
 
 }
-
-/* DELETE */
 
 function delItem(path){
 
